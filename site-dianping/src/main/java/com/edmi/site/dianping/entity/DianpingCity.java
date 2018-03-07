@@ -1,4 +1,4 @@
-package fun.jerry.site.dianping.entity;
+package com.edmi.site.dianping.entity;
 
 import java.io.Serializable;
 import java.util.Date;

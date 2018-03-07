@@ -1,10 +1,9 @@
-package fun.jerry.site.dianping.http;
+package com.edmi.site.dianping.http;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import org.apache.http.HttpStatus;
-import org.openqa.selenium.Proxy.ProxyType;
 
 import fun.jerry.common.ProxyType;
 import fun.jerry.common.RequestType;

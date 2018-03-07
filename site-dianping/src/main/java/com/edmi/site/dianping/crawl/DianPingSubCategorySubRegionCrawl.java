@@ -1,4 +1,4 @@
-package fun.jerry.site.dianping.crawl;
+package com.edmi.site.dianping.crawl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,11 @@ import org.jsoup.select.Elements;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.edmi.site.dianping.entity.DianpingCitySubCategory;
+import com.edmi.site.dianping.entity.DianpingCitySubRegion;
+import com.edmi.site.dianping.entity.DianpingSubCategorySubRegion;
+import com.edmi.site.dianping.http.DianPingCommonRequest;
+
 import fun.jerry.cache.holder.FirstCacheHolder;
 import fun.jerry.cache.jdbc.GeneralJdbcUtils;
 import fun.jerry.cache.jdbc.IGeneralJdbcUtils;
@@ -26,10 +31,6 @@ import fun.jerry.entity.DataSource;
 import fun.jerry.entity.SqlEntity;
 import fun.jerry.entity.SqlType;
 import fun.jerry.httpclient.bean.HttpRequestHeader;
-import fun.jerry.site.dianping.entity.DianpingCitySubCategory;
-import fun.jerry.site.dianping.entity.DianpingCitySubRegion;
-import fun.jerry.site.dianping.entity.DianpingSubCategorySubRegion;
-import fun.jerry.site.dianping.http.DianPingCommonRequest;
 
 /**
  * 传入需要抓取的城市和分类，如果，上海，美食

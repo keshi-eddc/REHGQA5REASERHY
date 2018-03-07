@@ -1,4 +1,4 @@
-package fun.jerry.site.dianping.crawl;
+package com.edmi.site.dianping.crawl;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -8,10 +8,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
+import com.edmi.site.dianping.entity.DianpingCity;
+
 import fun.jerry.common.LogSupport;
 import fun.jerry.httpclient.bean.HttpRequestHeader;
-import fun.jerry.httpclient.core.HttpClientSupport;
-import fun.jerry.site.dianping.entity.DianpingCity;
 
 @Component
 public class CityCrawl {

@@ -1,4 +1,4 @@
-package fun.jerry.site.dianping.crawl;
+package com.edmi.site.dianping.crawl;
 
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;

@@ -1,4 +1,4 @@
-package fun.jerry.site.dianping.entity;
+package com.edmi.site.dianping.entity;
 
 import java.util.Date;
 
@@ -11,33 +11,27 @@ import fun.jerry.entity.annotation.FieldUpdateExclude;
 import fun.jerry.entity.annotation.LogicalPrimaryKey;
 import fun.jerry.entity.annotation.TableMapping;
 
-@TableMapping("Dianping_City_SubCategory")
-public class DianpingCitySubCategory extends Model {
+@TableMapping("Dianping_City_SubRegion")
+public class DianpingCitySubRegion extends Model {
 
-	private static final long serialVersionUID = 4217070017854978866L;
+	private static final long serialVersionUID = -9122466825053508208L;
 	
-	@ColumnMapping("sub_category")
-	private String subCategory;
+	@ColumnMapping("sub_region")
+	private String subRegion;
 	
-	@ColumnMapping("sub_category_id")
 	@LogicalPrimaryKey
-	private String subCategoryId;
+	@ColumnMapping("sub_region_id")
+	private String subRegionId;
 	
-	@ColumnMapping("category")
-	private String category;
+	@ColumnMapping("region")
+	private String region;
 	
-	@ColumnMapping("category_id")
 	@LogicalPrimaryKey
-	private String categoryId;
+	@ColumnMapping("region_id")
+	private String regionId;
 	
-	@ColumnMapping("primary_category")
-	private String primaryCategory;
-	
-	@ColumnMapping("primary_category_id")
-	private String primaryCategoryId;
-	
+	@LogicalPrimaryKey
 	@ColumnMapping("city_id")
-	@LogicalPrimaryKey
 	private String cityId;
 	
 	@ColumnMapping("city_cnname")
@@ -45,7 +39,7 @@ public class DianpingCitySubCategory extends Model {
 	
 	@ColumnMapping("city_enname")
 	private String cityEnname;
-
+	
 	@ColumnMapping("update_time")
 	@FieldInsertExclude
 	private String updateTime = DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
@@ -53,53 +47,37 @@ public class DianpingCitySubCategory extends Model {
 	@ColumnMapping("insert_time")
 	@FieldUpdateExclude
 	private String insertTime = DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
-	
-	public String getSubCategory() {
-		return subCategory;
+
+	public String getSubRegion() {
+		return subRegion;
 	}
 
-	public void setSubCategory(String subCategory) {
-		this.subCategory = subCategory;
+	public void setSubRegion(String subRegion) {
+		this.subRegion = subRegion;
 	}
 
-	public String getSubCategoryId() {
-		return subCategoryId;
+	public String getSubRegionId() {
+		return subRegionId;
 	}
 
-	public void setSubCategoryId(String subCategoryId) {
-		this.subCategoryId = subCategoryId;
+	public void setSubRegionId(String subRegionId) {
+		this.subRegionId = subRegionId;
 	}
 
-	public String getCategory() {
-		return category;
+	public String getRegion() {
+		return region;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setRegion(String region) {
+		this.region = region;
 	}
 
-	public String getCategoryId() {
-		return categoryId;
+	public String getRegionId() {
+		return regionId;
 	}
 
-	public void setCategoryId(String categoryId) {
-		this.categoryId = categoryId;
-	}
-
-	public String getPrimaryCategory() {
-		return primaryCategory;
-	}
-
-	public void setPrimaryCategory(String primaryCategory) {
-		this.primaryCategory = primaryCategory;
-	}
-
-	public String getPrimaryCategoryId() {
-		return primaryCategoryId;
-	}
-
-	public void setPrimaryCategoryId(String primaryCategoryId) {
-		this.primaryCategoryId = primaryCategoryId;
+	public void setRegionId(String regionId) {
+		this.regionId = regionId;
 	}
 
 	public String getCityId() {
@@ -141,5 +119,5 @@ public class DianpingCitySubCategory extends Model {
 	public void setInsertTime(String insertTime) {
 		this.insertTime = insertTime;
 	}
-	
+		
 }
