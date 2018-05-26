@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:mybatis="http://www.mybatis.org/schema/mybatis"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+     http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+	 http://www.springframework.org/schema/tx 
+	 http://www.springframework.org/schema/tx/spring-tx-4.0.xsd  
+     http://www.springframework.org/schema/context  
+     http://www.springframework.org/schema/context/spring-context-4.0.xsd  
+     http://www.mybatis.org/schema/mybatis  
+     http://www.mybatis.org/schema/mybatis/mybatis-spring.xsd  
+     http://www.springframework.org/schema/mvc  
+     http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+     http://www.springframework.org/schema/task  
+	 http://www.springframework.org/schema/task/spring-task-4.0.xsd">
+
+	<bean id="propertyConfigurerSupport" class="fun.jerry.common.PropertyConfigurerSupport">
+	   	<property name="ignoreUnresolvablePlaceholders" value="true"/>
+	   	<property name="ignoreResourceNotFound" value="true"/>
+	   	<property name="locations">
+	       	<list>
+	       		<value>classpath:jdbc.properties</value>
+				<value>classpath:config.properties</value>
+				<value>classpath:dianping.properties</value>
+	       	</list>
+	   	</property>
+	</bean>
+	
+	<bean class="fun.jerry.common.ApplicationContextHolder" />
+	
+	<context:annotation-config />
+	<context:component-scan base-package="fun.jerry.cache.jdbc" />
+<!-- 	<context:component-scan base-package="com.edmi.site.dianping.http, com.edmi.site.dianping.config, com.edmi.site.dianping.cookie, fun.jerry.cache.jdbc" /> -->
+
+	<import resource="classpath*:datasource.xml"/>
+	
+	<!-- 开启事务注解驱动 -->
+	<tx:annotation-driven />
+	
+	<task:annotation-driven/>
+	
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+	
+	<!-- 引入quartz配置 -->
+<!-- 	<import resource="classpath*:quartz.xml"/> -->
+	<!-- 使用缓存模块引入配置即可 -->
+	<import resource="classpath*:cache.xml"/>
+</beans> 
