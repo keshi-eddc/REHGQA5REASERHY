@@ -10,6 +10,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.SQLException;
@@ -134,14 +135,18 @@ public class HtmlDataUtil {
 	 */
 	public static void saveData(String dir, String content) {
 		FileOutputStream outputStream = null;
+		OutputStreamWriter osw = null;
 		try {
 			outputStream = new FileOutputStream(dir);
-			outputStream.write(content.getBytes());
-			outputStream.flush();
+			osw = new OutputStreamWriter(outputStream, "GBK");
+			osw.write(content);
+			osw.flush();
 		} catch (FileNotFoundException e) {
 		} catch (IOException e) {
+			e.printStackTrace();
 		} finally {
 			try {
+				osw.close();
 				outputStream.close();
 			} catch (IOException e) {
 			}

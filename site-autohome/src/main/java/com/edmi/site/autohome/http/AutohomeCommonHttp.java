@@ -16,7 +16,7 @@ public class AutohomeCommonHttp extends HttpClientSupport {
 	
 	private static Logger log = LogSupport.getAutohomelog();
 	
-	public static String getMobileReputationList (HttpRequestHeader header)  {
+	public static String getMobileReputationList (HttpRequestHeader header) {
 		String html = "";
 		header.setProxyType(ProxyType.NONE);
 		header.setProject(Project.OTHER);
@@ -36,6 +36,33 @@ public class AutohomeCommonHttp extends HttpClientSupport {
 		header.setMaxTryTimes(1);
 		html = get(header).getContent();
 		return html;
+	}
+	
+	public static String getMobileClubDetail (HttpRequestHeader header)  {
+		String html = "";
+//		header.setProxyType(ProxyType.NONE);
+		header.setProxyType(ProxyType.PROXY_STATIC_DLY);
+//		header.setProxyType(ProxyType.PROXY_CLOUD_ABUYUN);
+		header.setProject(Project.OTHER);
+		header.setSite(Site.OTHER);
+		header.setEncode("UTF-8");
+		
+		header.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+		header.setAcceptEncoding("gzip, deflate, br");
+		header.setAcceptLanguage("zh-CN,zh;q=0.9,en;q=0.8");
+		header.setCacheControl("no-cache");
+		header.setConnection("keep-alive");
+//		header.setCookie("sessionip=140.206.67.58; sessionid=AD390436-D4CB-4DBE-ACFE-AF33FE78F864%7C%7C2018-05-25+15%3A02%3A59.072%7C%7C0; area=310199; __ah_uuid=389BB5BB-68CF-418B-8012-2C79F80887FE; fvlid=1527231772240Z5Gxhfrdk7; ahpau=1; UM_distinctid=1639691f1ff30-031ec2db9d2b93-3c3c520d-100200-1639691f200170; sessionuid=AD390436-D4CB-4DBE-ACFE-AF33FE78F864%7C%7C2018-05-25+15%3A02%3A59.072%7C%7C0; __utma=1.1478855483.1527303163.1527303163.1527303163.1; __utmz=1.1527303163.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); ahsids=614_526; searchhistory=%7B%22a%22%3A%7B%22t%22%3A%5B%22%22%5D%2C%22k%22%3A%22%22%7D%2C%22f%22%3A%7B%22t%22%3A%5B%22%22%5D%2C%22k%22%3A%22%22%7D%7D; sessionvid=3E57CA4A-CE41-4BB7-ABBD-2F8B70E8E155; historybbsName4=c-2098%7CAC%20Schnitzer%2Cc-145%7CPolo; isFromBaiDuSearch=; isFromQQSearch=; historyClub=588; isFromBD=; autoac=0EF926FA611926CE017DB35862B44DCE; autotc=3ADB8FCBCA08F1973E549E5B4A760003; ahpvno=1707; ref=www.baidu.com%7C0%7C0%7C0%7C2018-05-26+16%3A52%3A08.224%7C2018-05-26+12%3A29%3A04.736");
+//		header.setHost("club.m.autohome.com.cn");
+		header.setHost("club.autohome.com.cn");
+		header.setPragma("no-cache");
+		header.setUpgradeInsecureRequests("1");
+		header.setUserAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36");
+		header.setRequestSleepTime(1000);
+		header.setMaxTryTimes(1);
+		html = get(header).getContent();
+		return html;
+		
 	}
 	
 	public static String getReputationList(HttpRequestHeader header) {
