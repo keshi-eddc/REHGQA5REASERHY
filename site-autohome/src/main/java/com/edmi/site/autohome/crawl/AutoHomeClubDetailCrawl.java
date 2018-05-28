@@ -61,7 +61,7 @@ public class AutoHomeClubDetailCrawl implements Runnable {
 			BufferedReader br = new BufferedReader(new InputStreamReader(fis));
 			String line = null;
 			
-			ExecutorService pool = Executors.newFixedThreadPool(10);
+			ExecutorService pool = Executors.newFixedThreadPool(20);
 			int count = 0;
 			File file = new File("E:/autohome/club/none/");
 			String[] filelist = file.list();
@@ -77,10 +77,11 @@ public class AutoHomeClubDetailCrawl implements Runnable {
 			while ((line = br.readLine()) != null) {
 				String[] temp = line.split(",");
 				if (idList.contains(temp[0])) {
+					count ++;
 					pool.submit(new AutoHomeClubDetailCrawl(temp[0], temp[1]));
 				}
 			}
-			
+			System.out.println(count);
 			br.close();
 			
 			pool.shutdown();
