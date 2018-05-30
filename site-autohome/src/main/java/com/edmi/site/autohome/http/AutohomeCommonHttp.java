@@ -18,7 +18,8 @@ public class AutohomeCommonHttp extends HttpClientSupport {
 	
 	public static String getMobileReputationList (HttpRequestHeader header) {
 		String html = "";
-		header.setProxyType(ProxyType.NONE);
+//		header.setProxyType(ProxyType.NONE);
+		header.setProxyType(ProxyType.PROXY_STATIC_DLY);
 		header.setProject(Project.OTHER);
 		header.setSite(Site.OTHER);
 		
@@ -59,7 +60,7 @@ public class AutohomeCommonHttp extends HttpClientSupport {
 		header.setUpgradeInsecureRequests("1");
 		header.setUserAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36");
 		header.setRequestSleepTime(1000);
-		header.setMaxTryTimes(5);
+		header.setMaxTryTimes(1);
 		html = get(header).getContent();
 		return html;
 		

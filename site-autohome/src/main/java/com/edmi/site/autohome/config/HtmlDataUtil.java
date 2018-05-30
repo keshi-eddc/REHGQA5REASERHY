@@ -132,8 +132,9 @@ public class HtmlDataUtil {
 	 * 将指定信息保存到本地
 	 * @param dir
 	 * @param content
+	 * @throws IOException 
 	 */
-	public static void saveData(String dir, String content) {
+	public static void saveData(String dir, String content) throws IOException {
 		FileOutputStream outputStream = null;
 		OutputStreamWriter osw = null;
 		try {
@@ -142,8 +143,9 @@ public class HtmlDataUtil {
 			osw.write(content);
 			osw.flush();
 		} catch (FileNotFoundException e) {
+			throw new FileNotFoundException();
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new IOException();
 		} finally {
 			try {
 				osw.close();
