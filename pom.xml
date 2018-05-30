@@ -40,7 +40,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>platform-parent</finalName>
+		<finalName>site-parent</finalName>
 		<pluginManagement>
 			<plugins>
 				<plugin>

@@ -20,7 +20,8 @@ public class AutohomeTaskRequest extends HttpClientSupport {
 		List<TopicCrawled> list = new ArrayList<>();
 		try {
 			HttpRequestHeader header = new HttpRequestHeader();
-			header.setUrl("http://101.231.74.144:9092/task/autohome/club/detail/get");
+//			header.setUrl("http://101.231.74.144:9092/task/autohome/club/detail/get");
+			header.setUrl("http://192.168.0.49:9092/task/autohome/club/detail/get");
 			header.setProxyType(ProxyType.NONE);
 			header.setProject(Project.BUDWEISER);
 			header.setSite(Site.DIANPING);
