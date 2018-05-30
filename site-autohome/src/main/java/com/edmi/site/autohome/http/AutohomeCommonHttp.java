@@ -42,8 +42,8 @@ public class AutohomeCommonHttp extends HttpClientSupport {
 	public static String getMobileClubDetail (HttpRequestHeader header)  {
 		String html = "";
 //		header.setProxyType(ProxyType.NONE);
-		header.setProxyType(ProxyType.PROXY_STATIC_DLY);
-//		header.setProxyType(ProxyType.PROXY_CLOUD_ABUYUN);
+//		header.setProxyType(ProxyType.PROXY_STATIC_DLY);
+		header.setProxyType(ProxyType.PROXY_CLOUD_ABUYUN);
 		header.setProject(Project.OTHER);
 		header.setSite(Site.OTHER);
 		header.setEncode("UTF-8");

@@ -31,7 +31,7 @@ public class AutohomeTaskRequest extends HttpClientSupport {
 			list = new ArrayList<>();
 		} finally {
 			if (CollectionUtils.isEmpty(list)) {
-				return new ArrayList<>();
+				list = new ArrayList<>();
 			}
 		}
 		return list;
