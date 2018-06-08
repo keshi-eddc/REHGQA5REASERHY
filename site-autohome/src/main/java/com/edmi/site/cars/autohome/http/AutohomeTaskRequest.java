@@ -1,4 +1,4 @@
-package com.edmi.site.autohome.http;
+package com.edmi.site.cars.autohome.http;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 
 import com.alibaba.fastjson.JSONArray;
-import com.edmi.site.autohome.entity.TopicCrawled;
+import com.edmi.site.cars.autohome.entity.TopicCrawled;
 
 import fun.jerry.common.enumeration.Project;
 import fun.jerry.common.enumeration.ProxyType;

@@ -1,4 +1,4 @@
-package com.edmi.site.autohome.entity;
+package com.edmi.site.cars.autohome.entity;
 
 import java.util.Date;
 

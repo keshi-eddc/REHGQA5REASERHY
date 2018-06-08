@@ -1,4 +1,4 @@
-package com.edmi.site.autohome.job;
+package com.edmi.site.cars.autohome.job;
 
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -12,9 +12,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
-import com.edmi.site.autohome.crawl.AutoHomeClubReputationCrawl;
-import com.edmi.site.autohome.crawl.AutoHomeMobileReputationCrawl;
-import com.edmi.site.autohome.entity.ModelBrand;
+import com.edmi.site.cars.autohome.crawl.AutoHomeMobileReputationCrawl;
+import com.edmi.site.cars.autohome.entity.ModelBrand;
 
 import fun.jerry.cache.constant.Constant;
 import fun.jerry.cache.jdbc.GeneralJdbcUtils;

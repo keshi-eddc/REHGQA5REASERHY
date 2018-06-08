@@ -1,4 +1,4 @@
-package com.edmi.site.autohome.crawl;
+package com.edmi.site.cars.autohome.crawl;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -17,10 +17,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.WebDriver;
 
-import com.edmi.site.autohome.config.CarsSiteIdSupport;
-import com.edmi.site.autohome.entity.ModelBrand;
-import com.edmi.site.autohome.entity.ReputationList;
-import com.edmi.site.autohome.http.AutohomeCommonHttp;
+import com.edmi.site.cars.autohome.config.CarsSiteIdSupport;
+import com.edmi.site.cars.autohome.entity.ModelBrand;
+import com.edmi.site.cars.autohome.entity.ReputationList;
+import com.edmi.site.cars.autohome.http.AutohomeCommonHttp;
 
 import fun.jerry.cache.holder.FirstCacheHolder;
 import fun.jerry.cache.jdbc.GeneralJdbcUtils;

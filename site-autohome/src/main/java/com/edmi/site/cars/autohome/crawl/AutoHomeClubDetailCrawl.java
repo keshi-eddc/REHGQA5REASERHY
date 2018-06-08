@@ -1,6 +1,5 @@
-package com.edmi.site.autohome.crawl;
+package com.edmi.site.cars.autohome.crawl;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -12,10 +11,10 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.edmi.site.autohome.config.HtmlDataUtil;
-import com.edmi.site.autohome.entity.TopicCrawled;
-import com.edmi.site.autohome.http.AutohomeCommonHttp;
-import com.edmi.site.autohome.http.AutohomeTaskRequest;
+import com.edmi.site.cars.autohome.config.HtmlDataUtil;
+import com.edmi.site.cars.autohome.entity.TopicCrawled;
+import com.edmi.site.cars.autohome.http.AutohomeCommonHttp;
+import com.edmi.site.cars.autohome.http.AutohomeTaskRequest;
 
 import fun.jerry.cache.holder.FirstCacheHolder;
 import fun.jerry.common.LogSupport;

@@ -1,4 +1,4 @@
-package com.edmi.site.autohome.crawl;
+package com.edmi.site.cars.autohome.crawl;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,8 +16,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.edmi.site.autohome.config.HtmlDataUtil;
-import com.edmi.site.autohome.http.AutohomeCommonHttp;
+import com.edmi.site.cars.autohome.config.HtmlDataUtil;
+import com.edmi.site.cars.autohome.http.AutohomeCommonHttp;
 
 import fun.jerry.common.DateFormatSupport;
 import fun.jerry.common.LogSupport;

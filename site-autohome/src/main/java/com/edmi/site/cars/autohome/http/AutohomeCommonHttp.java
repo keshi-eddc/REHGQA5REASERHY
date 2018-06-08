@@ -1,4 +1,4 @@
-package com.edmi.site.autohome.http;
+package com.edmi.site.cars.autohome.http;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;

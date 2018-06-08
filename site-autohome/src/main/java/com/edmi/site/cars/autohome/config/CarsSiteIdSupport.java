@@ -1,4 +1,4 @@
-package com.edmi.site.autohome.config;
+package com.edmi.site.cars.autohome.config;
 
 public class CarsSiteIdSupport {
 	

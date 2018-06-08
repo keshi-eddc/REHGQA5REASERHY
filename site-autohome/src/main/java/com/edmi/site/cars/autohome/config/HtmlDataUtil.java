@@ -1,4 +1,4 @@
-package com.edmi.site.autohome.config;
+package com.edmi.site.cars.autohome.config;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;

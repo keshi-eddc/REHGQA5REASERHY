@@ -1,4 +1,4 @@
-package com.edmi.site.autohome.crawl;
+package com.edmi.site.cars.autohome.crawl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,15 +29,15 @@ import org.openqa.selenium.WebDriver;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.edmi.site.autohome.config.CarsSiteIdSupport;
-import com.edmi.site.autohome.config.HtmlDataUtil;
-import com.edmi.site.autohome.config.StringHelper;
-import com.edmi.site.autohome.entity.ModelBrand;
-import com.edmi.site.autohome.entity.ReputationComment;
-import com.edmi.site.autohome.entity.ReputationInfo;
-import com.edmi.site.autohome.entity.ReputationList;
-import com.edmi.site.autohome.entity.UserInfo;
-import com.edmi.site.autohome.http.AutohomeCommonHttp;
+import com.edmi.site.cars.autohome.config.CarsSiteIdSupport;
+import com.edmi.site.cars.autohome.config.HtmlDataUtil;
+import com.edmi.site.cars.autohome.config.StringHelper;
+import com.edmi.site.cars.autohome.entity.ModelBrand;
+import com.edmi.site.cars.autohome.entity.ReputationComment;
+import com.edmi.site.cars.autohome.entity.ReputationInfo;
+import com.edmi.site.cars.autohome.entity.ReputationList;
+import com.edmi.site.cars.autohome.entity.UserInfo;
+import com.edmi.site.cars.autohome.http.AutohomeCommonHttp;
 
 import fun.jerry.cache.holder.FirstCacheHolder;
 import fun.jerry.cache.jdbc.GeneralJdbcUtils;
