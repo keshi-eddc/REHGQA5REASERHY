@@ -86,7 +86,7 @@ public class AutohomeCommonHttp extends HttpClientSupport {
 		header.setPragma("no-cache");
 		header.setUpgradeInsecureRequests("1");
 		header.setUserAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36");
-		header.setRequestSleepTime(3000);
+		header.setRequestSleepTime(5000);
 		header.setMaxTryTimes(1);
 		html = get(header).getContent();
 		return html;
