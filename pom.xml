@@ -9,6 +9,7 @@
 	
 	<modules>
 		<module>site-autohome</module>
+		<module>site-dianping</module>
 	</modules>
 
 	<properties>
