@@ -1,11 +1,10 @@
 package com.edmi.site.cars.autohome.entity;
 
 import java.util.Date;
-
 import org.apache.commons.lang3.time.DateFormatUtils;
-
 import fun.jerry.entity.annotation.LogicalPrimaryKey;
-
+import fun.jerry.entity.annotation.TableMapping;
+@TableMapping("F_ReputationComment_P02")
 public class ReputationComment {
 	
 	@LogicalPrimaryKey
@@ -38,7 +37,7 @@ public class ReputationComment {
 	private String UpdateTime = DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
 	
 	public ReputationComment() {
-		super();
+//		super();
 	}
 
 	@Override

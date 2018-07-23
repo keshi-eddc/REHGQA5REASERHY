@@ -185,15 +185,15 @@ public class AutohomeCommonHttp extends HttpClientSupport {
 	 * 获取口碑评论
 	 */
 	public static String getReputationComment(HttpRequestHeader header) {
-		header.setEncode("GBK");
-		header.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-		header.setAcceptEncoding("gzip, deflate, sdch");
-		header.setAcceptLanguage("zh-CN,zh;q=0.8,en;q=0.6");
-		header.setCacheControl("max-age=0");
-		header.setConnection("keep-alive");
-		header.setHost("reply.autohome.com.cn");
-		header.setUpgradeInsecureRequests("1");
-		header.setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
+//		header.setEncode("GBK");
+//		header.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+//		header.setAcceptEncoding("gzip, deflate, sdch");
+//		header.setAcceptLanguage("zh-CN,zh;q=0.8,en;q=0.6");
+//		header.setCacheControl("max-age=0");
+//		header.setConnection("keep-alive");
+//		header.setHost("reply.autohome.com.cn");
+//		header.setUpgradeInsecureRequests("1");
+//		header.setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 //		header.setTimeOut(500);
 		return get(header).getContent();
 	}

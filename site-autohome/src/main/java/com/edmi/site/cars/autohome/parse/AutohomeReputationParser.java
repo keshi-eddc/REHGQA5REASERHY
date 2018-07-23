@@ -709,7 +709,7 @@ public class AutohomeReputationParser {
 	}
 	
 	public static void main(String[] args) {
-		File dir = new File("D:/home/conner/autohome/reputation/01bvcbppcq64vkachh6wrg0000.html");
+		File dir = new File("E:\\data\\program\\autohome\\autohome_html_test\\01bvnerh4v64vkacsr6wv00000.html");
 //		if (dir.isDirectory()) {
 //			File[] list = dir.listFiles();
 //			for (File file : list) {
