@@ -45,7 +45,6 @@ public class DianPingShopCommentPageCrawl implements Runnable {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-		DianPingCommonRequest.refreshShopCommentCookie();
 		StringBuilder sql = new StringBuilder();
 		sql.append("select top 1000 * from Dianping_ShopInfo A "
 				+ "where not exists (select 1 from Dianping_Shop_Comment_Page B where A.shop_id = B.shop_id) "

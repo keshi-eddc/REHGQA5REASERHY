@@ -33,7 +33,7 @@ public class DianpingShopDetailCookie implements InitializingBean {
 		COOKIES_SHOP_DETAIL.clear();
 		
 		COOKIES_SHOP_DETAIL.addAll(iGeneralJdbcUtils
-				.queryForListMap(new SqlEntity("select * from dbo.Dianping_ShopDetail_Cookie where len(user_agent) > 0",
+				.queryForListMap(new SqlEntity("select * from dbo.Dianping_Cookie where len(user_agent) > 0",
 						DataSource.DATASOURCE_DianPing, SqlType.PARSE_NO)));
 		
 		log.info("本次加载Cookie数量 " + COOKIES_SHOP_DETAIL.size());
@@ -45,7 +45,7 @@ public class DianpingShopDetailCookie implements InitializingBean {
 		IGeneralJdbcUtils iGeneralJdbcUtils = (IGeneralJdbcUtils) ApplicationContextHolder
 				.getBean(GeneralJdbcUtils.class);
 		COOKIES_SHOP_DETAIL.addAll(iGeneralJdbcUtils
-				.queryForListMap(new SqlEntity("select * from dbo.Dianping_ShopDetail_Cookie where len(user_agent) > 0",
+				.queryForListMap(new SqlEntity("select * from dbo.Dianping_Cookie where len(user_agent) > 0",
 						DataSource.DATASOURCE_DianPing, SqlType.PARSE_NO)));
 		
 		log.info("首次加载Cookie数量 " + COOKIES_SHOP_DETAIL.size());

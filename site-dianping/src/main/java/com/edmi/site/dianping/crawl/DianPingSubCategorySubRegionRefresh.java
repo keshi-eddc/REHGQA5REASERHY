@@ -69,7 +69,6 @@ public class DianPingSubCategorySubRegionRefresh implements Runnable {
 	@Override
 	public void run() {
 		log.info(cityCnname + " 开始抓取");
-		DianPingCommonRequest.refreshShopListCookie("http://www.dianping.com/shanghai/ch10/g110r2");
 		crawl();
 	}
 	

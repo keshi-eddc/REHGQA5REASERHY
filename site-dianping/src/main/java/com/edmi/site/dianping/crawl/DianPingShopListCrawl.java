@@ -73,7 +73,6 @@ public class DianPingShopListCrawl implements Runnable {
 					DianpingSubCategorySubRegionPage.class);
 			
 			if (CollectionUtils.isNotEmpty(urls)) {
-				DianPingCommonRequest.refreshShopListCookie(urls.get(0).getUrl() + "p" + urls.get(0).getPage());
 			} else {
 				log.info("店铺列表抓取完成");
 				break;

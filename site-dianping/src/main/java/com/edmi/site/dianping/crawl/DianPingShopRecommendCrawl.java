@@ -75,7 +75,6 @@ public class DianPingShopRecommendCrawl implements Runnable {
 	}
 	
 	private void crawl() {
-		DianPingCommonRequest.refreshShopRecommendCookie();
 		StringBuilder sql = new StringBuilder();
 		sql.append("select top 1000 * from Dianping_Shop_Comment_Page where status <> 200 ")
 //			.append("and sub_category_id in (select sub_category_id from dbo.Dianping_City_SubCategory ")
@@ -225,7 +224,6 @@ public class DianPingShopRecommendCrawl implements Runnable {
 			page.setStatus(200);
 		} else {
 			page.setStatus(0);
-			DianPingCommonRequest.removeInvalideCookie(DianPingCommonRequest.COOKIES_SHOPCOMMENT, header.getCookie());
 		}
 		
 		iGeneralJdbcUtils.execute(new SqlEntity(page, DataSource.DATASOURCE_DianPing, SqlType.PARSE_UPDATE));
