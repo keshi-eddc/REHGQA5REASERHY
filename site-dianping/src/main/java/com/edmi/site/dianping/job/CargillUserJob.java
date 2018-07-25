@@ -51,7 +51,7 @@ public class CargillUserJob {
 					ExecutorService pool = Executors.newFixedThreadPool(1);
 //					
 					for (DianpingShopInfo shop : shopList) {
-						pool.execute(new DianPingShopCommentCrawl(shop, false));
+//						pool.execute(new DianPingShopCommentCrawl(shop, false));
 					}
 					
 					pool.shutdown();

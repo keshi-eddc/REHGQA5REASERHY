@@ -1,43 +1,20 @@
 package com.edmi.site.dianping.http;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Component;
 
-import com.edmi.site.dianping.config.DianpingConfig;
 import com.edmi.site.dianping.cookie.DianpingShopDetailCookie;
-import com.edmi.site.dianping.cookie.DianpingUserInfoCookie;
 
-import fun.jerry.browser.WebDriverSupport;
-import fun.jerry.browser.entity.WebDriverConfig;
-import fun.jerry.cache.jdbc.GeneralJdbcUtils;
-import fun.jerry.cache.jdbc.IGeneralJdbcUtils;
-import fun.jerry.common.ApplicationContextHolder;
 import fun.jerry.common.LogSupport;
 import fun.jerry.common.enumeration.Project;
 import fun.jerry.common.enumeration.ProxyType;
 import fun.jerry.common.enumeration.RequestType;
 import fun.jerry.common.enumeration.Site;
-import fun.jerry.entity.system.DataSource;
-import fun.jerry.entity.system.SqlEntity;
-import fun.jerry.entity.system.SqlType;
 import fun.jerry.httpclient.bean.HttpRequestHeader;
 import fun.jerry.httpclient.bean.HttpResponse;
 import fun.jerry.httpclient.core.HttpClientSupport;
@@ -118,13 +95,13 @@ public class DianPingCommonRequest extends HttpClientSupport {
 //		header.setCookie(
 //				"_hc.v=\"\\\"ecf7cc6e-e3ac-4e4b-a454-a8817f963380.1526881397\\\"\"; _lxsdk_cuid=163813ba56b2d-0b00460b78a70c-3b7c015b-100200-163813ba56cc8; _lxsdk=163813ba56b2d-0b00460b78a70c-3b7c015b-100200-163813ba56cc8; _lxsdk_s=163813ba56e-7b1-ecd-dae%7C%7C43");
 		
-		Map<String, Object> map = DianpingShopDetailCookie.COOKIES_SHOP_DETAIL.poll();
+		Map<String, Object> map = DianpingShopDetailCookie.COOKIES_DIANPING.poll();
 		if (null != map && map.containsKey("cookie")) {
 			header.setCookie(map.get("cookie").toString());
 			header.setUserAgent(map.get("user_agent").toString());
 			log.info("本批次使用的电话号码 " + map.get("phone").toString());
 			
-			DianpingShopDetailCookie.COOKIES_SHOP_DETAIL.add(map);
+			DianpingShopDetailCookie.COOKIES_DIANPING.add(map);
 			
 		}
 		
@@ -142,7 +119,6 @@ public class DianPingCommonRequest extends HttpClientSupport {
 //		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static String getShopComment(HttpRequestHeader header) {
 		header.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
 		header.setAcceptEncoding("gzip, deflate");
@@ -152,33 +128,15 @@ public class DianPingCommonRequest extends HttpClientSupport {
 		header.setHost("www.dianping.com");
 		header.setUpgradeInsecureRequests("1");
 		header.setProxyType(ProxyType.PROXY_STATIC_DLY);
-//		int temp = new Random().nextInt(2000) + 100;
-//		log.info("##############################  " + temp);
-//		header.setCookie("cy=1; cye=shanghai; _lxsdk_cuid=1635e81d5a075-09058d3f43fb66-3f3c5501-100200-1635e81d5a1c8; "
-//				+ "_lxsdk=1635e81d5a075-09058d3f43fb66-3f3c5501-100200-1635e81d5a1c8; "
-//				+ "_hc.v=33d000db-e502-ea26-0b9f-5b9d922c26cf.;" + System.currentTimeMillis() / 1000 + " lgtoken=0e29cde03-9f96-471f-a65d-65064f1a090b; dper=2b77b9d675a89e5d46ca3857f188dee39b157643607744d23557342b23c3684a6afac73e3e33e885bb710a2c1daadb3c6f8a0cf30c6309ed05a0efe3f170e3a65c6d25f460fb7975ece2875a9c80766c8a7e54207a04af79186b784a1c5aa8f6; ll=7fd06e815b796be3df069dec7836c3df; ua=17080236415; ctu=8547636063072e202fea44548b5b3241fe96563d09252696b65f932541e8aeac; _lxsdk_s=1635e81d5a2-07f-870-5b0%7C%7C"
-//				+ temp);
-//		header.setCookie("cy=1; cye=shanghai; _lxsdk_cuid=16363a4d9d5c8-081941b76cdc5-3c3c5905-100200-16363a4d9d581; _lxsdk=16363a4d9d5c8-081941b76cdc5-3c3c5905-100200-16363a4d9d581; _hc.v=7d65222a-e429-4eef-0af2-fb043377894b.1526385138; dper=d53c28ee19e0ffaa8a3d3393127536d0c6ac92de9efd6c62493afc0a30bbebb46793b9834c958069742a1986a372819a4622755ed61fbd57a77a8e7fa9861b682d267627bfa9fbd952089820514b74489a9296d4dc9516c860007b176cdeaabc; ll=7fd06e815b796be3df069dec7836c3df; ua=15046321964; ctu=877054e387b412665d57e710e1bf3f01c861a2dc561249d58a2132e548b5f7dd; s_ViewType=10; _lxsdk_s=16363a4d9d7-2b2-718-d54%7C%7C328");
-//		header.setCookie("cy=2; cye=beijing; _lxsdk_cuid=1635e4a04ecc8-04865857687ba9-3f3c5501-100200-1635e4a04ecc8; _lxsdk=1635e4a04ecc8-04865857687ba9-3f3c5501-100200-1635e4a04ecc8; _hc.v=2725c736-98fd-868d-44f2-bd11965864c0.1526295303; dper=2b77b9d675a89e5d46ca3857f188dee355599a967b78fe239baf27592a1b54c1cc173547b9de59cc4dbc45d3c7c9ecf06d37d94c9b6d9f51aa16d97feeff9f9481148fca223b824626709c47a30cc9d38f6323ef89bac9b72af5355462655b86; ll=7fd06e815b796be3df069dec7836c3df; ua=17080236415; ctu=8547636063072e202fea44548b5b3241caba2053d5b42a9557a4610f9ad4ca92; _lxsdk_s=1635e4a04ed-a-c7c-498%7C%7C"
-//				+ new Random().nextInt(2000) + 100);
-//		header.setAutoPcUa(true);
-//		IGeneralJdbcUtils iGeneralJdbcUtils = (IGeneralJdbcUtils) ApplicationContextHolder.getBean(GeneralJdbcUtils.class);
-//		Map<String, Object> map = iGeneralJdbcUtils
-//				.queryOne(new SqlEntity("select top 1 * from dbo.Dianping_Cookie where phone = '17092688735'",
-//						DataSource.DATASOURCE_DianPing, SqlType.PARSE_NO));
-//		if (map.containsKey("cookie")) {
-//			header.setCookie(map.get("cookie").toString());
-//			log.info("本批次使用的电话号码 " + map.get("phone").toString());
-//		}
 		
-		Map<String, Object> map = DianpingShopDetailCookie.COOKIES_SHOP_DETAIL.poll();
-		if (null != map && map.containsKey("cookie")) {
-			header.setCookie(map.get("cookie").toString());
+		Map<String, Object> map = DianpingShopDetailCookie.COOKIES_DIANPING.poll();
+		if (null != map && map.containsKey(DianpingShopDetailCookie.COOKIE_COMMENT)) {
+			header.setCookie(map.get(DianpingShopDetailCookie.COOKIE_COMMENT).toString());
 //			header.setUserAgent(map.get("user_agent").toString());
 			header.setAutoPcUa(true);
 			log.info("本批次使用的电话号码 " + map.get("phone").toString());
 			
-			DianpingShopDetailCookie.COOKIES_SHOP_DETAIL.add(map);
+			DianpingShopDetailCookie.COOKIES_DIANPING.add(map);
 			
 		}
 		header.setAutoPcUa(true);
@@ -207,14 +165,14 @@ public class DianPingCommonRequest extends HttpClientSupport {
 		header.setUpgradeInsecureRequests("1");
 		header.setProxyType(ProxyType.PROXY_STATIC_DLY);
 //		header.setProxyType(ProxyType.NONE);
-		Map<String, Object> map = DianpingShopDetailCookie.COOKIES_SHOP_DETAIL.poll();
-		if (null != map && map.containsKey("cookie")) {
-			header.setCookie(map.get("cookie").toString());
+		Map<String, Object> map = DianpingShopDetailCookie.COOKIES_DIANPING.poll();
+		if (null != map && map.containsKey(DianpingShopDetailCookie.COOKIE_RECOMMEND)) {
+			header.setCookie(map.get(DianpingShopDetailCookie.COOKIE_RECOMMEND).toString());
 			header.setUserAgent(map.get("user_agent").toString());
 //			header.setAutoPcUa(true);
 			log.info("本批次使用的电话号码 " + map.get("phone").toString());
 			
-			DianpingShopDetailCookie.COOKIES_SHOP_DETAIL.add(map);
+			DianpingShopDetailCookie.COOKIES_DIANPING.add(map);
 			
 		}
 //		header.setAutoPcUa(true);
@@ -324,13 +282,13 @@ public class DianPingCommonRequest extends HttpClientSupport {
 //		header.setCookie("_hc.v=\"\"1c28735c-9efb-4f85-8805-eebb74bd311d.1521009797\"\"; _lxsdk_cuid=162233ff0b061-0bcb8b147ad2f-5e183017-100200-162233ff0b2c8; _lxsdk=162233ff0b061-0bcb8b147ad2f-5e183017-100200-162233ff0b2c8; cy=1; cye=shanghai; s_ViewType=10; m_flash2=1; pvhistory=6L+U5ZuePjo8L2Vycm9yL2Vycm9yX3BhZ2U+OjwxNTIxNTA3OTI5MTk2XV9b; _lxsdk_s=16240ebf651-c5a-e75-b4d%7C%7C319");
 //		header.setCookie("_hc.v=\"\"1c28735c-9efb-4f85-8805-eebb74bd311d." + ((System.currentTimeMillis() / 1000) - 6666) + "\"\"; _lxsdk_cuid=162233ff0b061-0bcb8b147ad2f-5e183017-100200-162233ff0b2c8; _lxsdk=162233ff0b061-0bcb8b147ad2f-5e183017-100200-162233ff0b2c8; cy=1; cye=shanghai; s_ViewType=10; m_flash2=1; pvhistory=6L+U5ZuePjo8L2Vycm9yL2Vycm9yX3BhZ2U+OjwxNTIxNTA3OTI5MTk2XV9b; _lxsdk_s=16240ebf651-c5a-e75-b4d%7C%7C319");
 		
-		Map<String, Object> map = DianpingShopDetailCookie.COOKIES_SHOP_DETAIL.poll();
+		Map<String, Object> map = DianpingShopDetailCookie.COOKIES_DIANPING.poll();
 		if (null != map && map.containsKey("cookie")) {
 			header.setCookie(map.get("cookie").toString());
 			header.setUserAgent(map.get("user_agent").toString());
 			log.info("本批次使用的电话号码 " + map.get("phone").toString());
 			
-			DianpingShopDetailCookie.COOKIES_SHOP_DETAIL.add(map);
+			DianpingShopDetailCookie.COOKIES_DIANPING.add(map);
 			
 		}
 		

@@ -34,8 +34,8 @@
 	<bean class="fun.jerry.common.ApplicationContextHolder" />
 	
 	<context:annotation-config />
-<!-- 	<context:component-scan base-package="com.edmi.site.dianping.http, com.edmi.site.dianping.crawl, com.edmi.site.dianping.config, com.edmi.site.dianping.cookie, fun.jerry.cache.jdbc" /> -->
-	<context:component-scan base-package="com.edmi.site.dianping.http, com.edmi.site.dianping.config, com.edmi.site.dianping.cookie, fun.jerry.cache.jdbc, com.edmi.site.dianping.crawl" />
+<!-- 	<context:component-scan base-package="com.edmi.site.dianping.config, com.edmi.site.dianping.cookie, fun.jerry.cache.jdbc, com.edmi.site.dianping.crawl" /> -->
+	<context:component-scan base-package="com.edmi.site.dianping.config, com.edmi.site.dianping.cookie, fun.jerry.cache.jdbc" />
 
 	<import resource="classpath*:datasource_dianping.xml"/>
 	

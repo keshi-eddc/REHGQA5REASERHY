@@ -1,16 +1,13 @@
 package com.edmi.site.dianping.crawl;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -44,11 +41,6 @@ public class DianPingShopCommentCrawl implements Runnable {
 	
 	private static Logger log = LogSupport.getDianpinglog();
 	
-	/**
-	 * 是否开启增量抓取
-	 */
-	private boolean increment;
-	
 	private DianpingShopInfo dianpingShopInfo;
 	
 	private IGeneralJdbcUtils iGeneralJdbcUtils;
@@ -57,10 +49,9 @@ public class DianPingShopCommentCrawl implements Runnable {
 	
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-	public DianPingShopCommentCrawl(DianpingShopInfo dianpingShopInfo, boolean increment) {
+	public DianPingShopCommentCrawl(DianpingShopInfo dianpingShopInfo) {
 		super();
 		this.dianpingShopInfo = dianpingShopInfo;
-		this.increment = increment;
 		this.iGeneralJdbcUtils = (IGeneralJdbcUtils) ApplicationContextHolder.getBean(GeneralJdbcUtils.class);
 		Map<String, Object> map = iGeneralJdbcUtils
 				.queryOne(new SqlEntity(
@@ -78,6 +69,7 @@ public class DianPingShopCommentCrawl implements Runnable {
 
 	@Override
 	public void run() {
+		log.info("开始抓取店铺评论 ： " + dianpingShopInfo.getShopId());
 		int totalPage = getTotalPage();
 		List<Integer> pageList = new ArrayList<>();
 		for (int page = 1; page <= totalPage; page ++) {
@@ -88,7 +80,7 @@ public class DianPingShopCommentCrawl implements Runnable {
 				break;
 			}
 		}
-		
+		log.info("店铺评论抓取结束 ： " + dianpingShopInfo.getShopId());
 	}
 	
 	private boolean parseComment(int page, int totalPage) {
@@ -227,9 +219,9 @@ public class DianPingShopCommentCrawl implements Runnable {
 		String html = DianPingCommonRequest.getShopComment(header);
 		Document doc = Jsoup.parse(html);
 //		log.info(html);
-		if (null != doc.select(".no-review-item").first()) {
+		if (null != doc.select(".no-review-item").first() || html.contains("该商户暂不展示评价")) {
 			totalPage = 0;
-		} else if (null != doc.select(".reviews-items")) {
+		} else if (CollectionUtils.isNotEmpty(doc.select(".reviews-items"))) {
 			// 发现有评论列表的，看是否包含评论
 			if (CollectionUtils.isNotEmpty(doc.select(".reviews-items ul li"))) {
 				Element pageEle = doc.select(".reviews-pages .PageLink").last();

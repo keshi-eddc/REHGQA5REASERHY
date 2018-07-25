@@ -22,7 +22,13 @@ public class DianpingShopDetailCookie implements InitializingBean {
 	
 	private Logger log = LogSupport.getDianpinglog();
 	
-	public final static BlockingQueue<Map<String, Object>> COOKIES_SHOP_DETAIL = new ArrayBlockingQueue<>(50);
+	public final static BlockingQueue<Map<String, Object>> COOKIES_DIANPING = new ArrayBlockingQueue<>(150);
+	
+	public final static String COOKIE_RECOMMEND = "cookie_recommend";
+	
+	public final static String COOKIE_COMMENT = "cookie_comment";
+	
+	public final static String COOKIE_USERCHECK = "cookie_usercheck";
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Scheduled(cron="0 0/10 * * * ?")
@@ -30,13 +36,13 @@ public class DianpingShopDetailCookie implements InitializingBean {
 		IGeneralJdbcUtils iGeneralJdbcUtils = (IGeneralJdbcUtils) ApplicationContextHolder
 				.getBean(GeneralJdbcUtils.class);
 		
-		COOKIES_SHOP_DETAIL.clear();
+		COOKIES_DIANPING.clear();
 		
-		COOKIES_SHOP_DETAIL.addAll(iGeneralJdbcUtils
+		COOKIES_DIANPING.addAll(iGeneralJdbcUtils
 				.queryForListMap(new SqlEntity("select * from dbo.Dianping_Cookie where len(user_agent) > 0",
 						DataSource.DATASOURCE_DianPing, SqlType.PARSE_NO)));
 		
-		log.info("本次加载Cookie数量 " + COOKIES_SHOP_DETAIL.size());
+		log.info("本次加载Cookie数量 " + COOKIES_DIANPING.size());
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -44,10 +50,10 @@ public class DianpingShopDetailCookie implements InitializingBean {
 	public void afterPropertiesSet() throws Exception {
 		IGeneralJdbcUtils iGeneralJdbcUtils = (IGeneralJdbcUtils) ApplicationContextHolder
 				.getBean(GeneralJdbcUtils.class);
-		COOKIES_SHOP_DETAIL.addAll(iGeneralJdbcUtils
+		COOKIES_DIANPING.addAll(iGeneralJdbcUtils
 				.queryForListMap(new SqlEntity("select * from dbo.Dianping_Cookie where len(user_agent) > 0",
 						DataSource.DATASOURCE_DianPing, SqlType.PARSE_NO)));
 		
-		log.info("首次加载Cookie数量 " + COOKIES_SHOP_DETAIL.size());
+		log.info("首次加载Cookie数量 " + COOKIES_DIANPING.size());
 	}
 }

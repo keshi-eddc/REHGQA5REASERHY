@@ -159,7 +159,7 @@ public class DianPingHotSuggestRankCrawl {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 //		IGeneralJdbcUtils iGeneralJdbcUtils = (IGeneralJdbcUtils) ApplicationContextHolder.getBean(GeneralJdbcUtils.class);
 //		
-//		new DianPingHotSuggestRankCrawl().realTimeRank();
+		new DianPingHotSuggestRankCrawl().realTimeRank();
 //		new DianPingHotSuggestRandCrawl().dishRank();
 //		
 //		((AbstractApplicationContext) context).registerShutdownHook();
