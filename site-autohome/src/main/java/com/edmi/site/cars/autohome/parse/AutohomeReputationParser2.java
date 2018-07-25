@@ -703,9 +703,8 @@ public class AutohomeReputationParser2 {
 
 			System.out.println(reputationInfo.toString());
 			// 存入数据库
-			// FirstCacheHolder.getInstance()
-			// .submitFirstCache(new SqlEntity(reputationInfo, DataSource.DATASOURCE_SGM,
-			// SqlType.PARSE_INSERT));
+			FirstCacheHolder.getInstance()
+					.submitFirstCache(new SqlEntity(reputationInfo, DataSource.DATASOURCE_SGM, SqlType.PARSE_INSERT));
 		} catch (Exception e) {
 			log.error(reputationInfo.getReputationUrl() + "解析 content出错：", e);
 		}
@@ -824,25 +823,29 @@ public class AutohomeReputationParser2 {
 	public static void main(String[] args) {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 
-		File dir = new File("E:\\data\\program\\autohome\\autohome_html_test\\01bvnerh4v64vkacsr6wv00000.html");
+		// File dir = new File("E:\\data\\ProjectData\\autohome\\autohome_html_test");
 		// File dir = new
 		// File("E:\\data\\program\\autohome\\autohome_html_test\\01bvy92hqe64vkadhh68r00000.html");
 
-		// File dir = new
-		// File("E:\\data\\program\\autohome\\autohome_html_test\\01bw9je8wj64vkccsg6rsg0000.html");
+		File dir = new File("E:\\data\\ProjectData\\autohome\\rout");
 
-		// if (dir.isDirectory()) {
-		// File[] list = dir.listFiles();
-		// for (File file : list) {
-		String html = "";
-		try {
-			html = FileUtils.readFileToString(dir, Charset.forName("GBK"));
-		} catch (IOException e) {
-			e.printStackTrace();
+		int count = 0;
+		if (dir.isDirectory()) {
+			File[] list = dir.listFiles();
+			for (File file : list) {
+				count++;
+				if (count > 5) {
+					break;
+				}
+				String html = "";
+				try {
+					html = FileUtils.readFileToString(file, Charset.forName("GBK"));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				parseMobileReputation(html);
+			}
 		}
-		parseMobileReputation(html);
-		// }
-		// }
 
 	}
 }
