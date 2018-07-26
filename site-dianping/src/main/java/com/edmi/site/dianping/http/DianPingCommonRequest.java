@@ -1,27 +1,40 @@
 package com.edmi.site.dianping.http;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.Random;
 
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.edmi.site.dianping.cookie.DianpingShopDetailCookie;
+import com.edmi.site.dianping.entity.IpTest;
 
+import fun.jerry.cache.jdbc.GeneralJdbcUtils;
+import fun.jerry.cache.jdbc.IGeneralJdbcUtils;
+import fun.jerry.common.ApplicationContextHolder;
 import fun.jerry.common.LogSupport;
 import fun.jerry.common.enumeration.Project;
 import fun.jerry.common.enumeration.ProxyType;
 import fun.jerry.common.enumeration.RequestType;
 import fun.jerry.common.enumeration.Site;
+import fun.jerry.entity.system.DataSource;
+import fun.jerry.entity.system.SqlEntity;
+import fun.jerry.entity.system.SqlType;
 import fun.jerry.httpclient.bean.HttpRequestHeader;
 import fun.jerry.httpclient.bean.HttpResponse;
 import fun.jerry.httpclient.core.HttpClientSupport;
+import fun.jerry.proxy.entity.Proxy;
 
 public class DianPingCommonRequest extends HttpClientSupport {
 
 	private static Logger log = LogSupport.getDianpinglog();
+	
+	private static Logger log_test = LogSupport.getJdlog();
 
 	public static String getSubCategorySubRegion(HttpRequestHeader header) {
 		header.setRequestType(RequestType.HTTP_GET);
@@ -120,6 +133,23 @@ public class DianPingCommonRequest extends HttpClientSupport {
 	}
 
 	public static String getShopComment(HttpRequestHeader header) {
+		
+		try {
+			Document doc = Jsoup.connect("http://2018.ip138.com/ic.asp").get();
+			log_test.info(doc.select("center").text());
+			
+			String info = doc.select("center").text();
+			
+			IpTest ip = new IpTest();
+			ip.setIp(info.substring(info.indexOf("[") + 1, info.lastIndexOf("]")));
+			ip.setLocation(info.substring(info.indexOf("来自：") + 3));
+			
+			IGeneralJdbcUtils iGeneralJdbcUtils = (IGeneralJdbcUtils) ApplicationContextHolder.getBean(GeneralJdbcUtils.class);
+			iGeneralJdbcUtils.execute(new SqlEntity(ip, DataSource.DATASOURCE_DianPing, SqlType.PARSE_INSERT));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		header.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
 		header.setAcceptEncoding("gzip, deflate");
 		header.setAcceptLanguage("zh-CN,zh;q=0.9,en;q=0.8");
@@ -127,18 +157,21 @@ public class DianPingCommonRequest extends HttpClientSupport {
 		header.setConnection("keep-alive");
 		header.setHost("www.dianping.com");
 		header.setUpgradeInsecureRequests("1");
-		header.setProxyType(ProxyType.PROXY_STATIC_DLY);
+		header.setProxyType(ProxyType.NONE);
+		header.setProxy(new Proxy("192.168.6.201", 8888));
+//		Map<String, Object> map = DianpingShopDetailCookie.COOKIES_DIANPING.poll();
+//		if (null != map && map.containsKey(DianpingShopDetailCookie.COOKIE_COMMENT)) {
+//			header.setCookie(map.get(DianpingShopDetailCookie.COOKIE_COMMENT).toString());
+////			header.setUserAgent(map.get("user_agent").toString());
+//			header.setAutoPcUa(true);
+//			log.info("本批次使用的电话号码 " + map.get("phone").toString());
+//			
+//			DianpingShopDetailCookie.COOKIES_DIANPING.add(map);
+//			
+//		}
 		
-		Map<String, Object> map = DianpingShopDetailCookie.COOKIES_DIANPING.poll();
-		if (null != map && map.containsKey(DianpingShopDetailCookie.COOKIE_COMMENT)) {
-			header.setCookie(map.get(DianpingShopDetailCookie.COOKIE_COMMENT).toString());
-//			header.setUserAgent(map.get("user_agent").toString());
-			header.setAutoPcUa(true);
-			log.info("本批次使用的电话号码 " + map.get("phone").toString());
-			
-			DianpingShopDetailCookie.COOKIES_DIANPING.add(map);
-			
-		}
+		header.setCookie("_lxsdk_cuid=164d54e0066c8-0e6ee7966-554c142e-100200-164d54e0067c8; _lxsdk=164d54e0066c8-0e6ee7966-554c142e-100200-164d54e0067c8; _hc.v=b4d5fc3d-41f5-9aab-499f-46df821329a9.1532587017; lgtoken=0a4a82ee0-8965-4c8d-a17d-df3cc85bd8e4; dper=265198ee165110bb345995850b1882798c27c47824c3308ab3f9125f7de75718d05c94486a03b39be2a48331a7adc2d0844bc1abdc919510c87720c0e3073650730f524375d8b2bdbc8e735ce2d2b919b1993c2c036728a5ec62a2c6977634d4; ll=7fd06e815b796be3df069dec7836c3df; ua=dpuser_56120824751; ctu=091f79945c7525af0d60fe33df5ebaaea760114081c23dfa5cd1d2678724db6d; uamo=18363102398; cy=1; cye=shanghai; s_ViewType=10; _lx_utm=utm_source%3DBaidu%26utm_medium%3Dorganic; _lxsdk_s=164d54e0068-689-466-fa3%7C%7C267");
+		
 		header.setAutoPcUa(true);
 //		header.setUserAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0");
 //		header.setUserAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
@@ -177,7 +210,7 @@ public class DianPingCommonRequest extends HttpClientSupport {
 		}
 //		header.setAutoPcUa(true);
 //		header.setCookie("cy=1; cye=shanghai; _lxsdk_cuid=163af0776adc8-0d9507b7989639-3c3c520d-100200-163af0776adc8; _lxsdk=163af0776adc8-0d9507b7989639-3c3c520d-100200-163af0776adc8; _hc.v=dc2c85cc-a2f8-2f67-41c0-85d1e7959bcf.1527649892; _dp.ac.v=7068a142-bca3-47f9-ad44-d115c0d0ace3; s_ViewType=10; ua=%E9%AD%94%E4%BA%BA%40%E6%99%AE%E4%B9%8C; ctu=946223b20ade88cd1373a6270d8145bf62877d2bae3b09c54d78e4c29b716109; ctu=57f4fba19c4400d8ada2e815a0bacf8f56ccad2e0f9bc373588beeb8f5714ecc7694423828faf1dc4fe77b9617252c16; _lxsdk_s=164cb446b5c-9ac-fe2-10c%7C%7C112");
-		header.setRequestSleepTime(10000);
+		header.setRequestSleepTime(20000);
 		HttpResponse response = get(header);
 		String html = "";
 		try {
@@ -371,7 +404,21 @@ public class DianPingCommonRequest extends HttpClientSupport {
 		
 //		test(new int[] {13,14,8,6,13});
 		
-		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+//		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		
+		try {
+			Document doc = Jsoup.connect("http://2018.ip138.com/ic.asp").get();
+			log_test.info(doc.select("center").text());
+			
+			String info = doc.select("center").text();
+			
+			IpTest ip = new IpTest();
+			ip.setIp(info.substring(info.indexOf("[") + 1, info.lastIndexOf("]")));
+			ip.setLocation(info.substring(info.indexOf("来自：") + 3));
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static String test(int[] list) {

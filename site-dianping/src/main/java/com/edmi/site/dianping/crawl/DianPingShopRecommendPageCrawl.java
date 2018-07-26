@@ -1,6 +1,5 @@
 package com.edmi.site.dianping.crawl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -49,7 +48,6 @@ public class DianPingShopRecommendPageCrawl implements Runnable {
 		this.iGeneralJdbcUtils = (IGeneralJdbcUtils) ApplicationContextHolder.getBean(GeneralJdbcUtils.class);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
 		HttpRequestHeader header = new HttpRequestHeader();
@@ -126,7 +124,7 @@ public class DianPingShopRecommendPageCrawl implements Runnable {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select distinct shop_id, shop_url from Dianping_ShopInfo_Cargill A "
 				+ "where version = '201806' "
-				+ "and category_id = 'g107' "
+//				+ "and category_id = 'g107' "
 				+ "and shop_id not in (select distinct shop_id from dbo.Dianping_Shop_Recommend_Info where version = '201806')"
 				);
 		
@@ -138,7 +136,7 @@ public class DianPingShopRecommendPageCrawl implements Runnable {
 			
 			if (CollectionUtils.isNotEmpty(urls)) {
 				
-				ExecutorService pool = Executors.newFixedThreadPool(1);
+				ExecutorService pool = Executors.newFixedThreadPool(7);
 				
 				for (DianpingShopInfo shopInfo : urls) {
 					pool.execute(new DianPingShopRecommendPageCrawl(shopInfo));

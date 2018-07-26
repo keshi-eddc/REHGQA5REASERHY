@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.edmi.site.dianping.config.PropertyConstant;
 import com.edmi.site.dianping.crawl.DianPingShopCommentCrawl;
 import com.edmi.site.dianping.entity.DianpingShopInfo;
 import com.edmi.site.dianping.http.DianPingCommonRequest;
@@ -19,6 +20,7 @@ import fun.jerry.cache.jdbc.GeneralJdbcUtils;
 import fun.jerry.cache.jdbc.IGeneralJdbcUtils;
 import fun.jerry.common.ApplicationContextHolder;
 import fun.jerry.common.LogSupport;
+import fun.jerry.common.PorpertyCommonSupport;
 import fun.jerry.entity.system.DataSource;
 import fun.jerry.entity.system.SqlEntity;
 import fun.jerry.entity.system.SqlType;
@@ -82,7 +84,8 @@ public class CargillShopCommentJob {
 				List<DianpingShopInfo> shopList = DianPingTaskRequest.getCommentShop();
 				log.info("获取未抓取评论的店铺个数：" + shopList.size());
 				if (CollectionUtils.isNotEmpty(shopList)) {
-					ExecutorService pool = Executors.newFixedThreadPool(3);
+					ExecutorService pool = Executors.newFixedThreadPool(PorpertyCommonSupport.getIntValue(
+							PropertyConstant.PROPERTY_NAME_DIANPING, PropertyConstant.KEY_COMMENT_POOL_SIZE));
 //					
 					for (DianpingShopInfo shop : shopList) {
 						pool.execute(new DianPingShopCommentCrawl(shop));
