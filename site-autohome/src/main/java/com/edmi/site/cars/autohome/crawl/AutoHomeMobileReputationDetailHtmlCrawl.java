@@ -57,7 +57,7 @@ public class AutoHomeMobileReputationDetailHtmlCrawl implements Runnable {
 				&& !html.contains("由于您的网络存在安全问题")
 				&& html.contains(id)) {
 			try {
-				HtmlDataUtil.saveData("/home/conner/autohome/reputation/" + id + ".html", html);
+				HtmlDataUtil.saveData("/home/conner/0727/" + id + ".html", html);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -74,7 +74,7 @@ public class AutoHomeMobileReputationDetailHtmlCrawl implements Runnable {
 	
 	public static void main(String[] args) {
 		String sql = "select top 500 ReputationUrl from dbo.F_ReputationList_P02 A "
-				+ "where PublishTime > '2017-10-01 00:00:00' "
+				+ "where PublishTime > '2018-05-28 00:00:00' "
 				+ "and not EXISTS (select 1 from dbo.F_Reputation_Crawled B where SUBSTRING(A.ReputationUrl, charindex('view_', A.ReputationUrl) + 5, 26) = B.Id)";
 
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
@@ -87,7 +87,7 @@ public class AutoHomeMobileReputationDetailHtmlCrawl implements Runnable {
 				List<ReputationCrawled> list = iGeneralJdbcUtils.queryForListObject(new SqlEntity(sql, DataSource.DATASOURCE_SGM, SqlType.PARSE_NO), ReputationCrawled.class);
 				log.info("获取未抓取个数：" + list.size());
 				if (CollectionUtils.isNotEmpty(list)) {
-					ExecutorService pool = Executors.newFixedThreadPool(40);
+					ExecutorService pool = Executors.newFixedThreadPool(20);
 					for (ReputationCrawled ss : list) {
 						pool.submit(new AutoHomeMobileReputationDetailHtmlCrawl(ss.getReputationUrl()));
 					}
