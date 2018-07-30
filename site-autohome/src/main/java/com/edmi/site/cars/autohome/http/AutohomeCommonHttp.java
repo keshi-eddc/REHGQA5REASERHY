@@ -195,6 +195,12 @@ public class AutohomeCommonHttp extends HttpClientSupport {
 //		header.setUpgradeInsecureRequests("1");
 //		header.setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 //		header.setTimeOut(500);
+		header.setProxyType(ProxyType.PROXY_STATIC_DLY);
+		header.setProject(Project.OTHER);
+		header.setSite(Site.OTHER);
+		//页面加载时候的超时时间 
+		header.setTimeOut(2000);
+		header.setMaxTryTimes(10);
 		return get(header).getContent();
 	}
 	

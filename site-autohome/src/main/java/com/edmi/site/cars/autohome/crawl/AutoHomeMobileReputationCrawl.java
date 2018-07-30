@@ -86,7 +86,7 @@ public class AutoHomeMobileReputationCrawl implements Runnable {
 	public void run() {
 		try {
 			HttpRequestHeader header = new HttpRequestHeader();
-			for (int page = 1; ; page ++) {
+			for (int page = 1; page <= 5; page ++) {
 				header.setUrl("https://k.m.autohome.com.cn/M_Evaluation/AutoSpecKouBeiListControl?SpaceFeeling=&PowerFeeling=&ManeuverabilityFeeling="
 						+ "&OilConsumptionFeeling=&SeriesQueryOrder=&boughtCity=&purposeTerms=&GradeEnum=&GradeValue=&cityname=&medalType="
 						+ "&serialId=" + (modelBrand.getSeriesBrandId() - 2 * CarsSiteIdSupport.SITE_ID_BOUND_SERIES_BRAND)

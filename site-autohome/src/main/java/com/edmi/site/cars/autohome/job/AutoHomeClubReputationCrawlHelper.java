@@ -48,7 +48,7 @@ public class AutoHomeClubReputationCrawlHelper {
 		List<ModelBrand> modelBrandList = iGeneralJdbcUtils
 				.queryForListObject(new SqlEntity("select * from dbo.D_ModelBrand where Platform = 'autohome' "
 //						+ "and ModelBrandId <= 2000011047 "
-						+ "and ModelBrandId <> 2000028323 "
+//						+ "and ModelBrandId <> 2000028323 "
 //						+ "and ModelBrandId > 2000011047 and ModelBrandId <= 2000022424 "
 						+ "order by ModelBrandId desc",
 						DataSource.DATASOURCE_SGM, SqlType.PARSE_NO), ModelBrand.class);
@@ -56,7 +56,7 @@ public class AutoHomeClubReputationCrawlHelper {
 		log.info("汽车之家-论坛-口碑 需要抓取的车系共 " + modelBrandList.size());
 
 		//		ExecutorService pool = Executors.newFixedThreadPool(config.getAutohomeReputationThreadNum());
-		ExecutorService pool = Executors.newFixedThreadPool(5);
+		ExecutorService pool = Executors.newFixedThreadPool(10);
 		
 		for (ModelBrand task : modelBrandList) {
 //			for (int i = 0; i < 200; i++) {
