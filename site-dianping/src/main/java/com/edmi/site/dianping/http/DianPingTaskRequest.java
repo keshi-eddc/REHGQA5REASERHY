@@ -65,7 +65,7 @@ public class DianPingTaskRequest extends HttpClientSupport {
 	}
 	
 	@SuppressWarnings("finally")
-	public static List<DianpingShopInfo> getCommentShop() {
+	public static List<DianpingShopInfo> getCommentShop(int num) {
 		List<DianpingShopInfo> list = new ArrayList<>();
 		try {
 			HttpRequestHeader header = new HttpRequestHeader();

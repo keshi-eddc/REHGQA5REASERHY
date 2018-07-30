@@ -11,9 +11,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.edmi.site.dianping.config.PropertyConstant;
+import com.edmi.site.dianping.cookie.DianpingShopDetailCookie;
 import com.edmi.site.dianping.crawl.DianPingShopCommentCrawl;
 import com.edmi.site.dianping.entity.DianpingShopInfo;
-import com.edmi.site.dianping.http.DianPingCommonRequest;
 import com.edmi.site.dianping.http.DianPingTaskRequest;
 
 import fun.jerry.cache.jdbc.GeneralJdbcUtils;
@@ -21,9 +21,6 @@ import fun.jerry.cache.jdbc.IGeneralJdbcUtils;
 import fun.jerry.common.ApplicationContextHolder;
 import fun.jerry.common.LogSupport;
 import fun.jerry.common.PorpertyCommonSupport;
-import fun.jerry.entity.system.DataSource;
-import fun.jerry.entity.system.SqlEntity;
-import fun.jerry.entity.system.SqlType;
 
 /**
  * 项目-嘉吉
@@ -79,13 +76,14 @@ public class CargillShopCommentJob {
 		int count = 0;
 		try {
 			while (true) {
+				int poolSize = DianpingShopDetailCookie.COOKIES_DIANPING.size();
+				log.info("本次使用的线程池容量：" + poolSize);
 				count ++;
 				log.info("##################" + count);
-				List<DianpingShopInfo> shopList = DianPingTaskRequest.getCommentShop();
+				List<DianpingShopInfo> shopList = DianPingTaskRequest.getCommentShop(poolSize);
 				log.info("获取未抓取评论的店铺个数：" + shopList.size());
 				if (CollectionUtils.isNotEmpty(shopList)) {
-					ExecutorService pool = Executors.newFixedThreadPool(PorpertyCommonSupport.getIntValue(
-							PropertyConstant.PROPERTY_NAME_DIANPING, PropertyConstant.KEY_COMMENT_POOL_SIZE));
+					ExecutorService pool = Executors.newFixedThreadPool(poolSize);
 //					
 					for (DianpingShopInfo shop : shopList) {
 						pool.execute(new DianPingShopCommentCrawl(shop));
