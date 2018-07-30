@@ -52,7 +52,7 @@ public class AutoHomeMobileReputationExtract implements Runnable {
 	@Override
 	public void run() {
 		log.info(Thread.currentThread().getName() + " run :" + filepath);
-		log.info(">>读了：<<" + count.getAndIncrement());
+		log.info(">>读了<< ：" + count.getAndIncrement());
 		String html = "";
 		File file = new File(filepath);
 		try {
