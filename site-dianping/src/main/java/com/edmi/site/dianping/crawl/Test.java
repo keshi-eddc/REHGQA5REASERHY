@@ -1,17 +1,23 @@
 package com.edmi.site.dianping.crawl;
 
-import org.apache.http.client.HttpClient;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
+import com.edmi.site.dianping.entity.IpTest;
+
+import fun.jerry.cache.jdbc.GeneralJdbcUtils;
+import fun.jerry.cache.jdbc.IGeneralJdbcUtils;
 import fun.jerry.common.ApplicationContextHolder;
 import fun.jerry.common.LogSupport;
 import fun.jerry.common.enumeration.ProxyType;
+import fun.jerry.entity.system.DataSource;
+import fun.jerry.entity.system.SqlEntity;
+import fun.jerry.entity.system.SqlType;
 import fun.jerry.httpclient.bean.HttpRequestHeader;
 import fun.jerry.httpclient.core.HttpClientSupport;
+import fun.jerry.proxy.entity.Proxy;
 
 @Component
 public class Test {
@@ -20,10 +26,30 @@ public class Test {
 	
 	public void dly() {
 		HttpRequestHeader header = new HttpRequestHeader();
-		header.setUrl("http://dly.134t.com/query.txt?key=NP71F79F3F&word=&count=1000&detail=true");
+		header.setUrl("http://2018.ip138.com/ic.asp");
 		header.setProxyType(ProxyType.NONE);
+		header.setProxy(new Proxy("192.168.6.201", 8888));
 		header.setAutoPcUa(true);
-		System.out.println(HttpClientSupport.get(header).getContent());
+		header.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+		header.setAcceptEncoding("gzip, deflate");
+		header.setCacheControl("no-cache");
+		header.setConnection("keep-alive");
+		header.setEncode("GB2312");
+		header.setHost("2018.ip138.com");
+		header.setUpgradeInsecureRequests("1");
+		header.setCookie("pgv_pvi=2987542528; ASPSESSIONIDQQDDQATB=OONPBKLCKDFFLEIICKHOMPJP; pgv_si=s6775525376; ASPSESSIONIDCSQRBCRC=ANMDEPCDMOKHMIGHLCCFNJBF; ASPSESSIONIDSSABQBTB=DLNIKPLCEAMPAELEELHDCLFH");
+		log.info(HttpClientSupport.get(header).getContent());
+		
+		Document doc = Jsoup.parse(HttpClientSupport.get(header).getContent());
+		
+		String info = doc.select("center").text();
+		
+		IpTest ip = new IpTest();
+		ip.setIp(info.substring(info.indexOf("[") + 1, info.lastIndexOf("]")));
+		ip.setLocation(info.substring(info.indexOf("来自：") + 3));
+		
+//		IGeneralJdbcUtils iGeneralJdbcUtils = (IGeneralJdbcUtils) ApplicationContextHolder.getBean(GeneralJdbcUtils.class);
+//		iGeneralJdbcUtils.execute(new SqlEntity(ip, DataSource.DATASOURCE_DianPing, SqlType.PARSE_INSERT));
 	}
 	
 	public static void main(String[] args) {

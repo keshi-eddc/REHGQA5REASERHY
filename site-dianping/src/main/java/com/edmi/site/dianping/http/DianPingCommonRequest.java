@@ -134,21 +134,21 @@ public class DianPingCommonRequest extends HttpClientSupport {
 
 	public static String getShopComment(HttpRequestHeader header) {
 		
-		try {
-			Document doc = Jsoup.connect("http://2018.ip138.com/ic.asp").get();
-			log_test.info(doc.select("center").text());
-			
-			String info = doc.select("center").text();
-			
-			IpTest ip = new IpTest();
-			ip.setIp(info.substring(info.indexOf("[") + 1, info.lastIndexOf("]")));
-			ip.setLocation(info.substring(info.indexOf("来自：") + 3));
-			
-			IGeneralJdbcUtils iGeneralJdbcUtils = (IGeneralJdbcUtils) ApplicationContextHolder.getBean(GeneralJdbcUtils.class);
-			iGeneralJdbcUtils.execute(new SqlEntity(ip, DataSource.DATASOURCE_DianPing, SqlType.PARSE_INSERT));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			Document doc = Jsoup.connect("http://2018.ip138.com/ic.asp").get();
+//			log_test.info(doc.select("center").text());
+//			
+//			String info = doc.select("center").text();
+//			
+//			IpTest ip = new IpTest();
+//			ip.setIp(info.substring(info.indexOf("[") + 1, info.lastIndexOf("]")));
+//			ip.setLocation(info.substring(info.indexOf("来自：") + 3));
+//			
+//			IGeneralJdbcUtils iGeneralJdbcUtils = (IGeneralJdbcUtils) ApplicationContextHolder.getBean(GeneralJdbcUtils.class);
+//			iGeneralJdbcUtils.execute(new SqlEntity(ip, DataSource.DATASOURCE_DianPing, SqlType.PARSE_INSERT));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 		
 		header.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
 		header.setAcceptEncoding("gzip, deflate");
@@ -157,22 +157,24 @@ public class DianPingCommonRequest extends HttpClientSupport {
 		header.setConnection("keep-alive");
 		header.setHost("www.dianping.com");
 		header.setUpgradeInsecureRequests("1");
-		header.setProxyType(ProxyType.NONE);
-		header.setProxy(new Proxy("192.168.6.201", 8888));
-//		Map<String, Object> map = DianpingShopDetailCookie.COOKIES_DIANPING.poll();
-//		if (null != map && map.containsKey(DianpingShopDetailCookie.COOKIE_COMMENT)) {
-//			header.setCookie(map.get(DianpingShopDetailCookie.COOKIE_COMMENT).toString());
-////			header.setUserAgent(map.get("user_agent").toString());
+		header.setProxyType(ProxyType.PROXY_STATIC_DLY);
+		header.setProject(Project.CARGILL);
+		header.setSite(Site.DIANPING);
+//		header.setProxy(new Proxy("192.168.6.201", 8888));
+		Map<String, Object> map = DianpingShopDetailCookie.COOKIES_DIANPING.poll();
+		if (null != map && map.containsKey(DianpingShopDetailCookie.COOKIE_COMMENT)) {
+			header.setCookie(map.get(DianpingShopDetailCookie.COOKIE_COMMENT).toString());
+			header.setUserAgent(map.get("user_agent").toString());
 //			header.setAutoPcUa(true);
-//			log.info("本批次使用的电话号码 " + map.get("phone").toString());
-//			
-//			DianpingShopDetailCookie.COOKIES_DIANPING.add(map);
-//			
-//		}
+			log.info("本批次使用的电话号码 " + map.get("phone").toString());
+			
+			DianpingShopDetailCookie.COOKIES_DIANPING.add(map);
+			
+		}
 		
-		header.setCookie("_lxsdk_cuid=164d54e0066c8-0e6ee7966-554c142e-100200-164d54e0067c8; _lxsdk=164d54e0066c8-0e6ee7966-554c142e-100200-164d54e0067c8; _hc.v=b4d5fc3d-41f5-9aab-499f-46df821329a9.1532587017; lgtoken=0a4a82ee0-8965-4c8d-a17d-df3cc85bd8e4; dper=265198ee165110bb345995850b1882798c27c47824c3308ab3f9125f7de75718d05c94486a03b39be2a48331a7adc2d0844bc1abdc919510c87720c0e3073650730f524375d8b2bdbc8e735ce2d2b919b1993c2c036728a5ec62a2c6977634d4; ll=7fd06e815b796be3df069dec7836c3df; ua=dpuser_56120824751; ctu=091f79945c7525af0d60fe33df5ebaaea760114081c23dfa5cd1d2678724db6d; uamo=18363102398; cy=1; cye=shanghai; s_ViewType=10; _lx_utm=utm_source%3DBaidu%26utm_medium%3Dorganic; _lxsdk_s=164d54e0068-689-466-fa3%7C%7C267");
+//		header.setCookie("_lxsdk_cuid=164d54e0066c8-0e6ee7966-554c142e-100200-164d54e0067c8; _lxsdk=164d54e0066c8-0e6ee7966-554c142e-100200-164d54e0067c8; _hc.v=b4d5fc3d-41f5-9aab-499f-46df821329a9.1532587017; lgtoken=0a4a82ee0-8965-4c8d-a17d-df3cc85bd8e4; dper=265198ee165110bb345995850b1882798c27c47824c3308ab3f9125f7de75718d05c94486a03b39be2a48331a7adc2d0844bc1abdc919510c87720c0e3073650730f524375d8b2bdbc8e735ce2d2b919b1993c2c036728a5ec62a2c6977634d4; ll=7fd06e815b796be3df069dec7836c3df; ua=dpuser_56120824751; ctu=091f79945c7525af0d60fe33df5ebaaea760114081c23dfa5cd1d2678724db6d; uamo=18363102398; cy=1; cye=shanghai; s_ViewType=10; _lx_utm=utm_source%3DBaidu%26utm_medium%3Dorganic; _lxsdk_s=164d54e0068-689-466-fa3%7C%7C267");
 		
-		header.setAutoPcUa(true);
+//		header.setAutoPcUa(true);
 //		header.setUserAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0");
 //		header.setUserAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
 //		header.setCookie();
