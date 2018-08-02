@@ -113,7 +113,7 @@ public class AutoHomeMobileReputationExtract implements Runnable {
 			// SeriesBrandId
 			Object seriesBrandId = reputationListmap.get("SeriesBrandId");
 			String seriesBrandIdstr = String.valueOf(seriesBrandId);
-			// ModelBrandId TODO
+			// ModelBrandId
 			Object modelBrandId = reputationListmap.get("ModelBrandId");
 			String modelBrandIdstr = String.valueOf(modelBrandId);
 			reputationInfo.setSeriesBrandId(Integer.valueOf(seriesBrandIdstr));

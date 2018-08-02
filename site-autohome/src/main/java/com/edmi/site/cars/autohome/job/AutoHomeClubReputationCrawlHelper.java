@@ -44,9 +44,9 @@ public class AutoHomeClubReputationCrawlHelper {
 		log.info("到点了，汽车之家-论坛-口碑 数据开始抓取！");
 		
 		IGeneralJdbcUtils iGeneralJdbcUtils = (IGeneralJdbcUtils) ApplicationContextHolder.getBean(GeneralJdbcUtils.class);
-		
+		//select * from dbo.D_ModelBrand where Platform = 'autohome'
 		List<ModelBrand> modelBrandList = iGeneralJdbcUtils
-				.queryForListObject(new SqlEntity("select * from dbo.D_ModelBrand where Platform = 'autohome' "
+				.queryForListObject(new SqlEntity("select * from dbo.D_ModelBrand_20180801 "
 //						+ "and ModelBrandId <= 2000011047 "
 //						+ "and ModelBrandId <> 2000028323 "
 //						+ "and ModelBrandId > 2000011047 and ModelBrandId <= 2000022424 "

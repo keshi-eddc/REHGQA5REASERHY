@@ -124,7 +124,7 @@ public class ReputationInfo {
 
 	private String PublishTime;//			datetime			--发布日期
 
-	private String ReputationSource;
+	private String ReputationSource;//                          --口碑来源平台 
 
 	private Integer ViewCount;//			int,				-- 浏览人数
 

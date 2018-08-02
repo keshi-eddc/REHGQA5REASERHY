@@ -28,7 +28,7 @@ public class AutoHomeReputationExtractHelper {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 
 		log.info("到点了，汽车之家-口碑 数据开始解析");
-		String path = "E:\\data\\ProjectData\\autohome\\reputation_out_20180729";
+		String path = "E:\\data\\ProjectData\\autohome\\reputation_out_20180801";
 		File file = new File(path);
 		File[] filelist = file.listFiles();
 		System.out.println("包含：" + filelist.length + "个 文件");

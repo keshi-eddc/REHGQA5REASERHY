@@ -31,7 +31,7 @@ public class AutoHomeReputationCommentCrawlHelper {
 
 		log.info("到点了，汽车之家-口碑评论 数据开始抓取！");
 
-		String path = "E:\\data\\program\\autohome\\aotohome_reputation";
+		String path = "E:\\data\\ProjectData\\autohome\\reputation_out_20180801";
 		File file = new File(path);
 		File[] filelist = file.listFiles();
 		System.out.println("包含：" + filelist.length + "个 文件");

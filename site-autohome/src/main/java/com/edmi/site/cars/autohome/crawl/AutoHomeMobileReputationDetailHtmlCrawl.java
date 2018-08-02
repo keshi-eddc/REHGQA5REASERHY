@@ -57,7 +57,7 @@ public class AutoHomeMobileReputationDetailHtmlCrawl implements Runnable {
 				&& !html.contains("由于您的网络存在安全问题")
 				&& html.contains(id)) {
 			try {
-				HtmlDataUtil.saveData("/home/conner/0727/" + id + ".html", html);
+				HtmlDataUtil.saveData("D:/data/autohome/" + id + ".html", html);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -73,8 +73,12 @@ public class AutoHomeMobileReputationDetailHtmlCrawl implements Runnable {
 	}
 	
 	public static void main(String[] args) {
+//		String sql = "select top 500 ReputationUrl from dbo.F_ReputationList_P02 A "
+//				+ "where PublishTime > '2018-07-27 00:00:00' "
+//				+ "and not EXISTS (select 1 from dbo.F_Reputation_Crawled B where SUBSTRING(A.ReputationUrl, charindex('view_', A.ReputationUrl) + 5, 26) = B.Id)";
 		String sql = "select top 500 ReputationUrl from dbo.F_ReputationList_P02 A "
-				+ "where PublishTime > '2018-05-28 00:00:00' "
+				+ "where convert(varchar(20), PublishTime, 23) BETWEEN '2018-07-01' and '2018-07-31' "
+				+ "and convert(varchar(20), InsertTime, 23) = '2018-08-01' "
 				+ "and not EXISTS (select 1 from dbo.F_Reputation_Crawled B where SUBSTRING(A.ReputationUrl, charindex('view_', A.ReputationUrl) + 5, 26) = B.Id)";
 
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
