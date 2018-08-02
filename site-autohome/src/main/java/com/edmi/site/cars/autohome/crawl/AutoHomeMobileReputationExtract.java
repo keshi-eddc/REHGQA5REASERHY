@@ -87,16 +87,14 @@ public class AutoHomeMobileReputationExtract implements Runnable {
 			if (reputionPlatformIdeles != null && reputionPlatformIdeles.size() > 0) {
 				String reputionPlatformIdstr = reputionPlatformIdeles.toString();
 				if (reputionPlatformIdstr.contains("koubeiId =")) {
-					String reputionPlatformId = StringUtils.substringBetween(reputionPlatformIdstr, "koubeiId =", ",")
-							.trim();
+					String reputionPlatformId = StringUtils.substringBetween(reputionPlatformIdstr, "koubeiId =", ",").trim();
 					reputationInfo.setReputationPlatformId(Long.valueOf(reputionPlatformId));
 					showId = StringUtils.substringBetween(reputionPlatformIdstr, "showId =", ";").trim();
 					showId = showId.replaceAll("\"", "");
 				}
 			}
 			// ReputationPlatformId
-			reputationInfo.setReputationInfoId(
-					2 * CarsSiteIdSupport.SITE_ID_BOUND_REPUTATION + reputationInfo.getReputationPlatformId());
+			reputationInfo.setReputationInfoId(2 * CarsSiteIdSupport.SITE_ID_BOUND_REPUTATION + reputationInfo.getReputationPlatformId());
 			// ReputationTitle
 			Elements ReputationTitleeles = doc.select("#content > div:nth-child(2) > section > header > h1");
 			if (ReputationTitleeles != null && ReputationTitleeles.size() > 0) {
@@ -107,8 +105,7 @@ public class AutoHomeMobileReputationExtract implements Runnable {
 			// 从表查F_ReputationList_P02
 			// System.out.println("showId:" + showId);
 			String sql = "select * from dbo.F_ReputationList_P02 where ReputationUrl like '%" + showId + "%'";
-			Map<String, Object> reputationListmap = iGeneralJdbcUtils
-					.queryOne(new SqlEntity(sql, DataSource.DATASOURCE_SGM, SqlType.PARSE_NO));
+			Map<String, Object> reputationListmap = iGeneralJdbcUtils.queryOne(new SqlEntity(sql, DataSource.DATASOURCE_SGM, SqlType.PARSE_NO));
 
 			// SeriesBrandId
 			Object seriesBrandId = reputationListmap.get("SeriesBrandId");
@@ -119,10 +116,18 @@ public class AutoHomeMobileReputationExtract implements Runnable {
 			reputationInfo.setSeriesBrandId(Integer.valueOf(seriesBrandIdstr));
 			reputationInfo.setModelBrandId(Long.valueOf(modelBrandIdstr));
 
-			// ReputationCategory
+			// ViewCount
+			Object viewCountobj = reputationListmap.get("ViewCount");
+			String viewCountstr = String.valueOf(viewCountobj);
+			reputationInfo.setViewCount(Integer.valueOf(viewCountstr));
+
+			// ReputationCategory TODO 没有
 			String reputationCategory = "";
+			
 			// ReputationCategory
-			String ReputationType = "";
+			Object reputationTypeobj = reputationListmap.get("ReputationType");
+			String reputationType = String.valueOf(reputationTypeobj);
+			reputationInfo.setReputationType(reputationType);
 
 			// BuyDate
 			Elements buyDateles = doc.select("section.cartype > span.date > span");
@@ -341,8 +346,7 @@ public class AutoHomeMobileReputationExtract implements Runnable {
 						publishTimes = StringUtils.substringAfter(publishTimes, "发表于");
 					}
 					reputationInfo.setReputationAuthorName(reputationAuthorName);
-					reputationInfo.setReputationAuthorId(
-							2 * CarsSiteIdSupport.SITE_ID_BOUND_REPUTATION + NumberUtils.toLong(reputationAuthorId));
+					reputationInfo.setReputationAuthorId(2 * CarsSiteIdSupport.SITE_ID_BOUND_REPUTATION + NumberUtils.toLong(reputationAuthorId));
 					reputationInfo.setPublishTime(publishTimes);
 				}
 				// ViewCount
@@ -360,8 +364,7 @@ public class AutoHomeMobileReputationExtract implements Runnable {
 			log.info(reputationInfo.toString());
 			// 存入数据库
 			if (isInsert) {
-				FirstCacheHolder.getInstance().submitFirstCache(
-						new SqlEntity(reputationInfo, DataSource.DATASOURCE_SGM, SqlType.PARSE_INSERT));
+				FirstCacheHolder.getInstance().submitFirstCache(new SqlEntity(reputationInfo, DataSource.DATASOURCE_SGM, SqlType.PARSE_INSERT));
 			}
 		} catch (Exception e) {
 			log.error(reputationInfo.getReputationUrl() + "解析 content出错：", e);
@@ -372,8 +375,7 @@ public class AutoHomeMobileReputationExtract implements Runnable {
 	public void setCommentCountWithRequest(ReputationInfo reputationInfo) {
 		String id = String.valueOf(reputationInfo.getReputationPlatformId());
 		HttpRequestHeader hearder = new HttpRequestHeader();
-		String url = "https://reply.autohome.com.cn/ShowReply/ReplyJsonredis.ashx?count=5&page=1&" + "id=" + id
-				+ "&datatype=jsonp&appid=5&callback=jsonp1";
+		String url = "https://reply.autohome.com.cn/ShowReply/ReplyJsonredis.ashx?count=5&page=1&" + "id=" + id + "&datatype=jsonp&appid=5&callback=jsonp1";
 		hearder.setUrl(url);
 		int commentcountallint = 0;
 		String html = AutohomeCommonHttp.getReputationComment(hearder);
@@ -435,16 +437,14 @@ public class AutoHomeMobileReputationExtract implements Runnable {
 			if (reputionPlatformIdeles != null && reputionPlatformIdeles.size() > 0) {
 				String reputionPlatformIdstr = reputionPlatformIdeles.toString();
 				if (reputionPlatformIdstr.contains("koubeiId =")) {
-					String reputionPlatformId = StringUtils.substringBetween(reputionPlatformIdstr, "koubeiId =", ",")
-							.trim();
+					String reputionPlatformId = StringUtils.substringBetween(reputionPlatformIdstr, "koubeiId =", ",").trim();
 					reputationInfo.setReputationPlatformId(Long.valueOf(reputionPlatformId));
 					showId = StringUtils.substringBetween(reputionPlatformIdstr, "showId =", ";").trim();
 					showId = showId.replaceAll("\"", "");
 				}
 			}
 			// ReputationPlatformId
-			reputationInfo.setReputationInfoId(
-					2 * CarsSiteIdSupport.SITE_ID_BOUND_REPUTATION + reputationInfo.getReputationPlatformId());
+			reputationInfo.setReputationInfoId(2 * CarsSiteIdSupport.SITE_ID_BOUND_REPUTATION + reputationInfo.getReputationPlatformId());
 			// ReputationTitle
 			Elements ReputationTitleeles = doc.select("#content > div:nth-child(2) > section > header > h1");
 			if (ReputationTitleeles != null && ReputationTitleeles.size() > 0) {
@@ -690,8 +690,7 @@ public class AutoHomeMobileReputationExtract implements Runnable {
 						publishTimes = StringUtils.substringAfter(publishTimes, "发表于");
 					}
 					reputationInfo.setReputationAuthorName(reputationAuthorName);
-					reputationInfo.setReputationAuthorId(
-							2 * CarsSiteIdSupport.SITE_ID_BOUND_REPUTATION + NumberUtils.toLong(reputationAuthorId));
+					reputationInfo.setReputationAuthorId(2 * CarsSiteIdSupport.SITE_ID_BOUND_REPUTATION + NumberUtils.toLong(reputationAuthorId));
 					reputationInfo.setPublishTime(publishTimes);
 				}
 				// ViewCount
@@ -708,8 +707,7 @@ public class AutoHomeMobileReputationExtract implements Runnable {
 			System.out.println(reputationInfo.toString());
 			// 存入数据库
 			if (isInsert) {
-				FirstCacheHolder.getInstance().submitFirstCache(
-						new SqlEntity(reputationInfo, DataSource.DATASOURCE_SGM, SqlType.PARSE_INSERT));
+				FirstCacheHolder.getInstance().submitFirstCache(new SqlEntity(reputationInfo, DataSource.DATASOURCE_SGM, SqlType.PARSE_INSERT));
 			}
 		} catch (Exception e) {
 			log.error(reputationInfo.getReputationUrl() + "解析 content出错：", e);
