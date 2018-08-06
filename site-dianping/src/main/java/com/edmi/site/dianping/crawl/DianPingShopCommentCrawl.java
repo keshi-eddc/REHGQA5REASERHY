@@ -221,6 +221,11 @@ public class DianPingShopCommentCrawl implements Runnable {
 //		log.info(html);
 		if (null != doc.select(".no-review-item").first() || html.contains("该商户暂不展示评价")) {
 			totalPage = 0;
+		} else if (html.contains("抱歉！页面无法访问") || html.contains("很抱歉，您要访问的页面不存在")) {
+			log.info(header.getUrl() + " 应该有评论，但是返回页面无法访问或页面不存在，重新请求");
+			log.info(html);
+			// 未发现评论列表的，没有评论，总页数为0
+			totalPage = getTotalPage();
 		} else if (CollectionUtils.isNotEmpty(doc.select(".reviews-items"))) {
 			// 发现有评论列表的，看是否包含评论
 			if (CollectionUtils.isNotEmpty(doc.select(".reviews-items ul li"))) {

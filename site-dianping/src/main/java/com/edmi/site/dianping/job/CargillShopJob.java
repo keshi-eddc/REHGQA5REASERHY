@@ -37,7 +37,9 @@ public class CargillShopJob {
 //		String[] keywords = new String[] {"汉堡"};
 		
 		// 西餐、韩国料理、日本菜、面包甜点、咖啡店、粤菜、台湾菜、川菜、东南亚菜、小吃面食
-		String[] categories = new String[] {"g116", "g114", "g113", "g117", "g132", "g103", "g107", "g102", "g115", "g217"};
+		// 西餐、韩国料理、日本菜、面包甜点、咖啡店、粤菜、台湾菜、川菜、东南亚菜、小吃快餐
+//		String[] categories = new String[] {"g116", "g114", "g113", "g117", "g132", "g103", "g107", "g102", "g115", "g217"};
+		String[] categories = new String[] {"g116", "g114", "g113", "g117", "g132", "g103", "g107", "g102", "g115", "g112"};
 //		String[] categories = new String[] {"g116"};
 		
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");

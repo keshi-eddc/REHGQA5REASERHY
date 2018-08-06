@@ -4,6 +4,6 @@ public class Version {
 	
 	public static final String version = "init";
 	
-	public static final String version_last_month = "201806";
+	public static final String version_last_month = "201807";
 	
 }

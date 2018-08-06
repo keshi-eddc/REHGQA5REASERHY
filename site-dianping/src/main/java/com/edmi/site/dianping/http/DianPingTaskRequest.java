@@ -69,6 +69,8 @@ public class DianPingTaskRequest extends HttpClientSupport {
 		List<DianpingShopInfo> list = new ArrayList<>();
 		try {
 			HttpRequestHeader header = new HttpRequestHeader();
+//			header.setUrl("http://210.22.183.72:9091/task/dianping/comment/get/" + num);
+//			header.setUrl("http://127.0.0.1:9091/task/dianping/comment/get/" + num);
 			header.setUrl("http://210.22.183.72:9091/task/dianping/comment/get/" + num);
 			header.setProxyType(ProxyType.NONE);
 			header.setProject(Project.BUDWEISER);

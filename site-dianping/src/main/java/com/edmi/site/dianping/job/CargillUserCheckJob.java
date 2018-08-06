@@ -75,7 +75,7 @@ public class CargillUserCheckJob {
 			while (true) {
 				count ++;
 				log.info("##################" + count);
-				List<DianpingShopInfo> shopList = DianPingTaskRequest.getCommentShop();
+				List<DianpingShopInfo> shopList = DianPingTaskRequest.getCommentShop(2);
 				log.info("获取未抓取评论的店铺个数：" + shopList.size());
 				if (CollectionUtils.isNotEmpty(shopList)) {
 					ExecutorService pool = Executors.newFixedThreadPool(1);

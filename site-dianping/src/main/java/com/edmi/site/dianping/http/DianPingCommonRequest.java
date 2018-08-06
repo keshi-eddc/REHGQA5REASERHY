@@ -70,14 +70,14 @@ public class DianPingCommonRequest extends HttpClientSupport {
 		header.setUpgradeInsecureRequests("1");
 		header.setProxyType(ProxyType.PROXY_STATIC_DLY);
 //		header.setProxyType(ProxyType.PROXY_CLOUD_ABUYUN);
-		header.setCookie("");
+		header.setCookie("cy=1; cye=shanghai; _lxsdk_cuid=163af0776adc8-0d9507b7989639-3c3c520d-100200-163af0776adc8; _lxsdk=163af0776adc8-0d9507b7989639-3c3c520d-100200-163af0776adc8; _hc.v=dc2c85cc-a2f8-2f67-41c0-85d1e7959bcf.1527649892; _dp.ac.v=7068a142-bca3-47f9-ad44-d115c0d0ace3; s_ViewType=10; ua=%E9%AD%94%E4%BA%BA%40%E6%99%AE%E4%B9%8C; ctu=946223b20ade88cd1373a6270d8145bf62877d2bae3b09c54d78e4c29b716109; _lxsdk_s=164f43ec641-3e6-b3d-214%7C%7C17");
 //		header.setUserAgent(
 //				"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
 //		header.setUserAgent(UserAgentSupport.getPCUserAgent());
 		header.setUserAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0");
 //		header.setAutoPcUa(true);
 //		header.setAutoMobileUa(true);
-		header.setRequestSleepTime(1000);
+		header.setRequestSleepTime(3000);
 		header.setMaxTryTimes(1);
 		if (header.getProject() == Project.CARGILL) {
 			header.setMaxTryTimes(10);
@@ -152,30 +152,32 @@ public class DianPingCommonRequest extends HttpClientSupport {
 		
 		header.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
 		header.setAcceptEncoding("gzip, deflate");
-		header.setAcceptLanguage("zh-CN,zh;q=0.9,en;q=0.8");
-		header.setCacheControl("no-cache");
+		header.setAcceptLanguage("zh-CN,zh;q=0.9");
+		header.setCacheControl("max-age=0");
 		header.setConnection("keep-alive");
 		header.setHost("www.dianping.com");
 		header.setUpgradeInsecureRequests("1");
 		header.setProxyType(ProxyType.PROXY_STATIC_DLY);
+//		header.setProxyType(ProxyType.PROXY_CLOUD_ABUYUN);
+//		header.setProxyType(ProxyType.NONE);
 		header.setProject(Project.CARGILL);
 		header.setSite(Site.DIANPING);
-//		header.setProxy(new Proxy("192.168.6.201", 8888));
+//		header.setProxy(new Proxy("125.118.242.90", 6666));
 		Map<String, Object> map = DianpingShopDetailCookie.COOKIES_DIANPING.poll();
 		if (null != map && map.containsKey(DianpingShopDetailCookie.COOKIE_COMMENT)) {
 			header.setCookie(map.get(DianpingShopDetailCookie.COOKIE_COMMENT).toString());
-			header.setUserAgent(map.get("user_agent").toString());
-//			header.setAutoPcUa(true);
+//			header.setUserAgent(map.get("user_agent").toString());
+			header.setAutoPcUa(true);
 			log.info("本批次使用的电话号码 " + map.get("phone").toString());
 			
 			DianpingShopDetailCookie.COOKIES_DIANPING.add(map);
 			
 		}
 		
-//		header.setCookie("_lxsdk_cuid=164d54e0066c8-0e6ee7966-554c142e-100200-164d54e0067c8; _lxsdk=164d54e0066c8-0e6ee7966-554c142e-100200-164d54e0067c8; _hc.v=b4d5fc3d-41f5-9aab-499f-46df821329a9.1532587017; lgtoken=0a4a82ee0-8965-4c8d-a17d-df3cc85bd8e4; dper=265198ee165110bb345995850b1882798c27c47824c3308ab3f9125f7de75718d05c94486a03b39be2a48331a7adc2d0844bc1abdc919510c87720c0e3073650730f524375d8b2bdbc8e735ce2d2b919b1993c2c036728a5ec62a2c6977634d4; ll=7fd06e815b796be3df069dec7836c3df; ua=dpuser_56120824751; ctu=091f79945c7525af0d60fe33df5ebaaea760114081c23dfa5cd1d2678724db6d; uamo=18363102398; cy=1; cye=shanghai; s_ViewType=10; _lx_utm=utm_source%3DBaidu%26utm_medium%3Dorganic; _lxsdk_s=164d54e0068-689-466-fa3%7C%7C267");
+//		header.setCookie("cy=1; cye=shanghai; _lxsdk_cuid=164ff3759fcc8-0ecb77c2df43f1-3c3c520d-1fa400-164ff3759fdc8; _lxsdk=164ff3759fcc8-0ecb77c2df43f1-3c3c520d-1fa400-164ff3759fdc8; _hc.v=de179e2c-3e70-c5f3-5af4-7b7b4f2d309e.1533290175; _dp.ac.v=308386d9-f1b7-41ab-94b4-cfdf610c4b33; dper=60e25c1799bd2229ee0e398e9e50f5d05df543700781f5e9ed5f3e6870b11b16a07b7933a14543665a530a622b192adb19cd755547127f4803460f7476fa9a48d529e1eff44affc7ef2cd9889fa7be3c4fe22e86c7d06277f72216da490648f4; ll=7fd06e815b796be3df069dec7836c3df; ua=17151837694; ctu=f5539fc230d3b0f5512266208879744a3bda46f23d8f6626b3cd626c281a04a3; s_ViewType=10; _lxsdk_s=1650d4b9879-6b4-544-057%7C%7C315");
 		
 //		header.setAutoPcUa(true);
-//		header.setUserAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0");
+//		header.setUserAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36");
 //		header.setUserAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
 //		header.setCookie();
 		header.setRequestSleepTime(10000);
@@ -212,7 +214,7 @@ public class DianPingCommonRequest extends HttpClientSupport {
 		}
 //		header.setAutoPcUa(true);
 //		header.setCookie("cy=1; cye=shanghai; _lxsdk_cuid=163af0776adc8-0d9507b7989639-3c3c520d-100200-163af0776adc8; _lxsdk=163af0776adc8-0d9507b7989639-3c3c520d-100200-163af0776adc8; _hc.v=dc2c85cc-a2f8-2f67-41c0-85d1e7959bcf.1527649892; _dp.ac.v=7068a142-bca3-47f9-ad44-d115c0d0ace3; s_ViewType=10; ua=%E9%AD%94%E4%BA%BA%40%E6%99%AE%E4%B9%8C; ctu=946223b20ade88cd1373a6270d8145bf62877d2bae3b09c54d78e4c29b716109; ctu=57f4fba19c4400d8ada2e815a0bacf8f56ccad2e0f9bc373588beeb8f5714ecc7694423828faf1dc4fe77b9617252c16; _lxsdk_s=164cb446b5c-9ac-fe2-10c%7C%7C112");
-		header.setRequestSleepTime(20000);
+		header.setRequestSleepTime(10000);
 		HttpResponse response = get(header);
 		String html = "";
 		try {
