@@ -28,12 +28,12 @@ public class AutoHomeReputationExtractHelper {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 
 		log.info("到点了，汽车之家-口碑 数据开始解析");
-		String path = "E:\\data\\ProjectData\\autohome\\reputation_out_20180801";
+		String path = "E:\\data\\ProjectData\\autohome\\reputation_out_20180802-3\\rout";
 		File file = new File(path);
 		File[] filelist = file.listFiles();
 		System.out.println("包含：" + filelist.length + "个 文件");
 
-		ExecutorService pool = Executors.newFixedThreadPool(10);
+		ExecutorService pool = Executors.newFixedThreadPool(1);
 		for (File f : filelist) {
 			String filename = f.getName();
 			// System.out.println("filename:" + filename);
@@ -56,6 +56,5 @@ public class AutoHomeReputationExtractHelper {
 				}
 			}
 		}
-
 	}
 }

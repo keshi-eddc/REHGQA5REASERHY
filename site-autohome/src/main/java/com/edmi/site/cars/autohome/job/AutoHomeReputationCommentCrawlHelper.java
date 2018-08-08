@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.edmi.site.cars.autohome.crawl.AutoHomeMobileReputationCommentCrawl;
 import fun.jerry.cache.constant.Constant;
 import fun.jerry.common.LogSupport;
+
 /**
  * 汽车之家-口碑评论
  *
@@ -31,7 +32,7 @@ public class AutoHomeReputationCommentCrawlHelper {
 
 		log.info("到点了，汽车之家-口碑评论 数据开始抓取！");
 
-		String path = "E:\\data\\ProjectData\\autohome\\reputation_out_20180801";
+		String path = "E:\\data\\ProjectData\\autohome\\reputation_out_20180802-3\\rout";
 		File file = new File(path);
 		File[] filelist = file.listFiles();
 		System.out.println("包含：" + filelist.length + "个 文件");
@@ -46,7 +47,6 @@ public class AutoHomeReputationCommentCrawlHelper {
 				System.out.println("count>>" + count + "<<" + filePath);
 				pool.submit(new AutoHomeMobileReputationCommentCrawl(filePath));
 			}
-
 		}
 		pool.shutdown();
 
@@ -62,6 +62,5 @@ public class AutoHomeReputationCommentCrawlHelper {
 				}
 			}
 		}
-
 	}
 }

@@ -107,27 +107,38 @@ public class AutoHomeMobileReputationExtract implements Runnable {
 			String sql = "select * from dbo.F_ReputationList_P02 where ReputationUrl like '%" + showId + "%'";
 			Map<String, Object> reputationListmap = iGeneralJdbcUtils.queryOne(new SqlEntity(sql, DataSource.DATASOURCE_SGM, SqlType.PARSE_NO));
 
-			// SeriesBrandId
-			Object seriesBrandId = reputationListmap.get("SeriesBrandId");
-			String seriesBrandIdstr = String.valueOf(seriesBrandId);
-			// ModelBrandId
-			Object modelBrandId = reputationListmap.get("ModelBrandId");
-			String modelBrandIdstr = String.valueOf(modelBrandId);
-			reputationInfo.setSeriesBrandId(Integer.valueOf(seriesBrandIdstr));
-			reputationInfo.setModelBrandId(Long.valueOf(modelBrandIdstr));
+			if (reputationListmap.size() > 0) {
+				// SeriesBrandId
+				Object seriesBrandId = reputationListmap.get("SeriesBrandId");
+				if (seriesBrandId != null) {
+					String seriesBrandIdstr = String.valueOf(seriesBrandId);
+					reputationInfo.setSeriesBrandId(Integer.valueOf(seriesBrandIdstr));
 
-			// ViewCount
-			Object viewCountobj = reputationListmap.get("ViewCount");
-			String viewCountstr = String.valueOf(viewCountobj);
-			reputationInfo.setViewCount(Integer.valueOf(viewCountstr));
+				}
+				// ModelBrandId
+				Object modelBrandId = reputationListmap.get("ModelBrandId");
+				if (modelBrandId != null) {
+					String modelBrandIdstr = String.valueOf(modelBrandId);
+					reputationInfo.setModelBrandId(Long.valueOf(modelBrandIdstr));
+				}
 
-			// ReputationCategory TODO 没有
-			String reputationCategory = "";
-			
-			// ReputationCategory
-			Object reputationTypeobj = reputationListmap.get("ReputationType");
-			String reputationType = String.valueOf(reputationTypeobj);
-			reputationInfo.setReputationType(reputationType);
+				// ViewCount
+				Object viewCountobj = reputationListmap.get("ViewCount");
+				if (viewCountobj != null) {
+					String viewCountstr = String.valueOf(viewCountobj);
+					reputationInfo.setViewCount(Integer.valueOf(viewCountstr));
+				}
+
+				// ReputationCategory TODO 没有
+				String reputationCategory = "";
+
+				// ReputationCategory
+				Object reputationTypeobj = reputationListmap.get("ReputationType");
+				if (reputationTypeobj != null) {
+					String reputationType = String.valueOf(reputationTypeobj);
+					reputationInfo.setReputationType(reputationType);
+				}
+			}
 
 			// BuyDate
 			Elements buyDateles = doc.select("section.cartype > span.date > span");
