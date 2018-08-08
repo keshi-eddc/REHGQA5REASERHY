@@ -37,8 +37,8 @@ public class AutoHomeMobileReputationExtract implements Runnable {
 
 	public static Logger log = LogSupport.getAutohomelog();
 	// 是否插入数据库
-	static Boolean isInsert = true;
-	// static Boolean isInsert = false;
+//	static Boolean isInsert = true;
+	 static Boolean isInsert = false;
 	private String filepath;
 	private static IGeneralJdbcUtils<?> iGeneralJdbcUtils;
 	public static final AtomicInteger count = new AtomicInteger(0);
@@ -357,7 +357,8 @@ public class AutoHomeMobileReputationExtract implements Runnable {
 						publishTimes = StringUtils.substringAfter(publishTimes, "发表于");
 					}
 					reputationInfo.setReputationAuthorName(reputationAuthorName);
-					reputationInfo.setReputationAuthorId(2 * CarsSiteIdSupport.SITE_ID_BOUND_REPUTATION + NumberUtils.toLong(reputationAuthorId));
+					//SITE_ID_BOUND_REPUTATION
+					reputationInfo.setReputationAuthorId(2 * CarsSiteIdSupport.SITE_ID_BOUND_USER + NumberUtils.toLong(reputationAuthorId));
 					reputationInfo.setPublishTime(publishTimes);
 				}
 				// ViewCount
