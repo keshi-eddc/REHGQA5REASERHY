@@ -31,6 +31,7 @@ import fun.jerry.entity.system.SqlType;
 public class Testjob {
 	public static Logger log = LogSupport.getAutohomelog();
 
+	
 	public void parseMobileReputation(String detail) {
 		// ------搜索-----
 		// if(detail.contains("精华") ) {
