@@ -38,6 +38,7 @@
 	<context:component-scan base-package="com.edmi.site.dianping.config, com.edmi.site.dianping.cookie, fun.jerry.cache.jdbc" />
 
 	<import resource="classpath*:datasource_dianping.xml"/>
+	<import resource="classpath*:datasource_proxy.xml"/>
 	
 	<!-- 开启事务注解驱动 -->
 	<tx:annotation-driven />

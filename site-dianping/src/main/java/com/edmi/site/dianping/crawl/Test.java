@@ -20,9 +20,7 @@ import fun.jerry.proxy.entity.Proxy;
 @Component
 public class Test {
 	
-	private static Logger log = LogSupport.getJdlog();
-	private static Logger log3 = LogSupport.getYhdlog();
-	private static Logger log4 = LogSupport.getAutohomelog();
+	private static Logger log = LogSupport.getYhdlog();
 
 	public void dly () {
 		Thread t1 = new Thread(new Runnable() {

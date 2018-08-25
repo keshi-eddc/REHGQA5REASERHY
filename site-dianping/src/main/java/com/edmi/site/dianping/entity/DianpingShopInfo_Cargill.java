@@ -13,7 +13,7 @@ import fun.jerry.entity.annotation.TableMapping;
  * @author conner
  *
  */
-@TableMapping("Dianping_ShopInfo_Cargill")
+@TableMapping("Dianping_ShopInfo_Cargill_0809")
 public class DianpingShopInfo_Cargill extends DianpingShopInfo_Common {
 
 	private static final long serialVersionUID = 4217070017854978866L;
@@ -29,8 +29,11 @@ public class DianpingShopInfo_Cargill extends DianpingShopInfo_Common {
 	@ColumnMapping("keyword")
 	private String keyword;
 	
+	@ColumnMapping("data_type")
+	private String dataType;
+	
 	@ColumnMapping("version")
-	private String version = DateFormatUtils.format(new Date(), "yyyy-MM");
+	private String version = Version.version_last_month;
 	
 	public String getSource() {
 		return source;
@@ -54,6 +57,14 @@ public class DianpingShopInfo_Cargill extends DianpingShopInfo_Common {
 
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+	public String getDataType() {
+		return dataType;
+	}
+
+	public void setDataType(String dataType) {
+		this.dataType = dataType;
 	}
 	
 }

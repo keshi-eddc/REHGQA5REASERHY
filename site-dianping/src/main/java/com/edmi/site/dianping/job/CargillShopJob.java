@@ -47,17 +47,17 @@ public class CargillShopJob {
 		
 		List<DianpingCityInfo> cityList = iGeneralJdbcUtils.queryForListObject(new SqlEntity(
 				"select * from dbo.Dianping_CityInfo where cityName in ("
-				+ "'北京', '上海', '广州', '深圳')",
-//				+ "'北京')",
+//				+ "'北京', '上海', '广州', '深圳')",
+				+ "'上海')",
 				DataSource.DATASOURCE_DianPing, SqlType.PARSE_NO), DianpingCityInfo.class);
 		
 		ExecutorService pool = Executors.newFixedThreadPool(10);
 		
 		for (DianpingCityInfo cityInfo : cityList) {
 			
-			for (String keyword : keywords) {
-				pool.submit(new CargillDianPingShopListCrawl(2, keyword, cityInfo.getCityId(), null, null, null, "ch10", "", ""));
-			}
+//			for (String keyword : keywords) {
+//				pool.submit(new CargillDianPingShopListCrawl(2, keyword, cityInfo.getCityId(), null, null, null, "ch10", "", ""));
+//			}
 			
 			for (String categoryId : categories) {
 				pool.submit(new CargillDianPingShopListCrawl(1, categoryId, cityInfo.getCityId(), cityInfo.getCityEnName(), cityInfo.getCityName(), "美食", "ch10", "", categoryId));

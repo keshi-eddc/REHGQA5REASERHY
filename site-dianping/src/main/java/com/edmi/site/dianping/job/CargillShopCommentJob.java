@@ -81,7 +81,8 @@ public class CargillShopCommentJob {
 				log.info("本次使用的线程池容量：" + poolSize);
 				count ++;
 				log.info("##################" + count);
-				List<DianpingShopInfo> shopList = DianPingTaskRequest.getCommentShop(poolSize);
+//				List<DianpingShopInfo> shopList = DianPingTaskRequest.getCommentShop(poolSize);
+				List<DianpingShopInfo> shopList = DianPingTaskRequest.getCommentShop(1);
 				log.info("获取未抓取评论的店铺个数：" + shopList.size());
 				if (CollectionUtils.isNotEmpty(shopList)) {
 					ExecutorService pool = Executors.newFixedThreadPool(poolSize);
