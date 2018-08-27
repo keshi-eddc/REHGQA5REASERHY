@@ -46,7 +46,7 @@ public class AutoHomeClubReputationCrawlHelper {
 		IGeneralJdbcUtils iGeneralJdbcUtils = (IGeneralJdbcUtils) ApplicationContextHolder.getBean(GeneralJdbcUtils.class);
 		//select * from dbo.D_ModelBrand where Platform = 'autohome'
 		List<ModelBrand> modelBrandList = iGeneralJdbcUtils
-				.queryForListObject(new SqlEntity("select * from dbo.D_ModelBrand_20180801 "
+				.queryForListObject(new SqlEntity("select * from dbo.D_ModelBrand where platform = 'autohome' "
 //						+ "and ModelBrandId <= 2000011047 "
 //						+ "and ModelBrandId <> 2000028323 "
 //						+ "and ModelBrandId > 2000011047 and ModelBrandId <= 2000022424 "
