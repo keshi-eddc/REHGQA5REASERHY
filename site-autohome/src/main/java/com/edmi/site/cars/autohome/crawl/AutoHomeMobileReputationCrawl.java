@@ -4,18 +4,17 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.openqa.selenium.WebDriver;
 
 import com.edmi.site.cars.autohome.config.CarsSiteIdSupport;
 import com.edmi.site.cars.autohome.entity.ModelBrand;
@@ -51,17 +50,9 @@ public class AutoHomeMobileReputationCrawl implements Runnable {
 	
 	private ModelBrand modelBrand;
 	
-	private WebDriver driver;
-	
 	private boolean exist = false;
 	
 	private IGeneralJdbcUtils<?> iGeneralJdbcUtils;
-	
-	private String ReputationUrl;
-	
-	private String PublishTime;
-	
-	private String ReputationAuthorName;
 	
 	private int totalPage = 20;
 	
@@ -69,17 +60,6 @@ public class AutoHomeMobileReputationCrawl implements Runnable {
 		super();
 		this.iGeneralJdbcUtils = (IGeneralJdbcUtils<?>) ApplicationContextHolder.getBean(GeneralJdbcUtils.class);
 		this.modelBrand = modelBrand;
-		Map<String, Object> map = iGeneralJdbcUtils
-				.queryOne(
-						new SqlEntity(
-								"select top 1 ReputationUrl, convert(varchar(20), PublishTime, 23) as PublishTime, ReputationAuthorName from dbo.F_ReputationInfo_P02 where ModelBrandId = "
-										+ modelBrand.getModelBrandId() + " order by PublishTime desc",
-								DataSource.DATASOURCE_SGM, SqlType.PARSE_NO));
-		if (null != map) {
-			ReputationUrl = null != map.get("ReputationUrl") ? map.get("ReputationUrl").toString() : "";
-			PublishTime = null != map.get("PublishTime") ? map.get("PublishTime").toString() : "";
-			ReputationAuthorName = null != map.get("ReputationAuthorName") ? map.get("ReputationAuthorName").toString() : "";
-		}
 	}
 
 	@Override
@@ -93,49 +73,73 @@ public class AutoHomeMobileReputationCrawl implements Runnable {
 						+ "&pageIndex=" + page + "&specStateEnum=&PageCount=&isSeries=false&isSending=true"
 						+ "&Id=" + (modelBrand.getModelBrandId() - 2 * CarsSiteIdSupport.SITE_ID_BOUND_MODEL_BRAND) + "&yearId=&SemanticKey=&IsSemantic=false");
 				String html = AutohomeCommonHttp.getMobileReputationList(header);
-				if (html.contains("暂无口碑，去发表第一篇口碑吧")) {
-					break;
-				} else {
-					Document doc = Jsoup.parse(html);
-					Elements eles = doc.select(".comments .comment");
-					if (CollectionUtils.isEmpty(eles)) {
-//						log.info("请求失败 " + html);
-//						continue;
-//					} else if (CollectionUtils.isNotEmpty(eles) && eles.size() < 20) {
-//						log.info("请求失败 " + eles);
-//						continue;
+				while (true) {
+					
+					if (html.contains("暂无口碑，去发表第一篇口碑吧")) {
+						break;
 					} else {
-						for (Element ele : eles) {
-							ReputationList r = new ReputationList();
-							r.setReputationPlatformId(0L);
-							//SeriesBrandId
-							r.setSeriesBrandId(modelBrand.getSeriesBrandId());
-							//ModelBrandId
-							r.setModelBrandId(modelBrand.getModelBrandId());
-							//Platform
-							r.setPlatform(CarsSiteIdSupport.SITE_AUTOHOME);
-							
-							r.setReputationUrl(ele.attr("onclick").replace("javascript:location.href='", "").replace("'", ""));
-							r.setReputationUrl(r.getReputationUrl().replace("//k.autohome.com.cn", "http://k.autohome.com.cn"));
-							
-							Element title = ele.select(".comment-title").first();
-							r.setReputationTitle(null != title ? title.text().trim() : "");
-							
-							Element user = ele.select(".comment-user .comment-user-name").first();
-							if (null != user) {
-								r.setReputationAuthorId(2 * CarsSiteIdSupport.SITE_ID_BOUND_USER + NumberUtils.toLong(user.attr("id").replace("userAuthLevel_", "")));
-								r.setReputationAuthorName(user.text().trim());
+						Document doc = Jsoup.parse(html);
+						Elements eles = doc.select(".comments .comment");
+						if (CollectionUtils.isEmpty(eles)) {
+//							log.info("请求失败 " + html);
+//							continue;
+//						} else if (CollectionUtils.isNotEmpty(eles) && eles.size() < 20) {
+//							log.info("请求失败 " + eles);
+//							continue;
+						} else {
+							for (Element ele : eles) {
+								ReputationList r = new ReputationList();
+								r.setReputationPlatformId(0L);
+								//SeriesBrandId
+								r.setSeriesBrandId(modelBrand.getSeriesBrandId());
+								//ModelBrandId
+								r.setModelBrandId(modelBrand.getModelBrandId());
+								//Platform
+								r.setPlatform(CarsSiteIdSupport.SITE_AUTOHOME);
+								
+								r.setReputationUrl(ele.attr("onclick").replace("javascript:location.href='", "").replace("'", ""));
+								r.setReputationUrl(r.getReputationUrl().replace("//k.autohome.com.cn", "http://k.autohome.com.cn"));
+								
+								Element reputationTypeEle = ele.select(".comment-essence").first();
+								if (null != reputationTypeEle) {
+									String src = reputationTypeEle.hasAttr("src") ? reputationTypeEle.attr("src") : "";
+									if (StringUtils.isNotEmpty(src)) {
+										String reputationType = "";
+										if (src.contains("list-recommend")) {
+											reputationType = "首页推荐";
+										} else if (src.contains("essence2")) {
+											reputationType = "精华";
+										} else if (src.contains("essence1")) {
+											reputationType = "满级精华";
+										}
+										r.setReputationType(reputationType);
+									}
+								}
+								
+								Element title = ele.select(".comment-title").first();
+								r.setReputationTitle(null != title ? title.text().trim() : "");
+								
+								Element user = ele.select(".comment-user .comment-user-name").first();
+								if (null != user) {
+									r.setReputationAuthorId(2 * CarsSiteIdSupport.SITE_ID_BOUND_USER + NumberUtils.toLong(user.attr("id").replace("userAuthLevel_", "")));
+									r.setReputationAuthorName(user.text().trim());
+								}
+								
+								Element publishTime = ele.select(".comment-user .comment-user-time").first();
+								r.setPublishTime(publishTime.text().replace("发表于", "").trim());
+								
+								Element viewEle = ele.select(".icon-eye").first();
+								r.setViewCount(null != viewEle ? Integer.parseInt(viewEle.text().trim()) : 0);
+								
+								Element likeEle = ele.select(".icon-praise").first();
+								r.setLikeCount(null != likeEle ? Integer.parseInt(likeEle.text().trim()) : 0);
+								
+								FirstCacheHolder.getInstance().submitFirstCache(new SqlEntity(r, DataSource.DATASOURCE_SGM, SqlType.PARSE_INSERT));
 							}
-							
-							Element publishTime = ele.select(".comment-user .comment-user-time").first();
-							r.setPublishTime(publishTime.text().replace("发表于", "").trim());
-							
-							FirstCacheHolder.getInstance().submitFirstCache(new SqlEntity(r, DataSource.DATASOURCE_SGM, SqlType.PARSE_INSERT));
 						}
 					}
 				}
 			}
-			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
