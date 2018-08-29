@@ -29,6 +29,9 @@ import fun.jerry.entity.system.SqlType;
  * @author conner
  *
  */
+/**
+ * 抓取汽车之家口碑列表
+ */
 @Component
 public class AutoHomeClubReputationCrawlHelper {
 	
@@ -50,6 +53,7 @@ public class AutoHomeClubReputationCrawlHelper {
 //						+ "and ModelBrandId <= 2000011047 "
 //						+ "and ModelBrandId <> 2000028323 "
 //						+ "and ModelBrandId > 2000011047 and ModelBrandId <= 2000022424 "
+						+ "and ModelBrandId = 2000025701 "
 						+ "order by ModelBrandId desc",
 						DataSource.DATASOURCE_SGM, SqlType.PARSE_NO), ModelBrand.class);
 		

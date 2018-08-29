@@ -75,7 +75,7 @@ public class AutoHomeMobileReputationCrawl implements Runnable {
 				String html = AutohomeCommonHttp.getMobileReputationList(header);
 				while (true) {
 					
-					if (html.contains("暂无口碑，去发表第一篇口碑吧")) {
+					if (StringUtils.isNotEmpty(html) && html.contains("暂无口碑，去发表第一篇口碑吧")) {
 						break;
 					} else {
 						Document doc = Jsoup.parse(html);
@@ -136,6 +136,7 @@ public class AutoHomeMobileReputationCrawl implements Runnable {
 								
 								FirstCacheHolder.getInstance().submitFirstCache(new SqlEntity(r, DataSource.DATASOURCE_SGM, SqlType.PARSE_INSERT));
 							}
+							break;
 						}
 					}
 				}
