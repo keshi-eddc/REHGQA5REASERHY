@@ -1,22 +1,20 @@
 package com.edmi.site.cars.autohome.crawl;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import com.edmi.site.cars.autohome.config.HtmlDataUtil;
 import com.edmi.site.cars.autohome.entity.ReputationCrawled;
-import com.edmi.site.cars.autohome.entity.TopicCrawled;
 import com.edmi.site.cars.autohome.http.AutohomeCommonHttp;
-import com.edmi.site.cars.autohome.http.AutohomeTaskRequest;
-
 import fun.jerry.cache.holder.FirstCacheHolder;
 import fun.jerry.cache.jdbc.GeneralJdbcUtils;
 import fun.jerry.cache.jdbc.IGeneralJdbcUtils;
@@ -32,14 +30,20 @@ import fun.jerry.httpclient.bean.HttpRequestHeader;
  * 每个车型的口碑可能有多页
  * @author conner
  */
+/**
+ *保存口碑文件html 
+ * 
+ */
 public class AutoHomeMobileReputationDetailHtmlCrawl implements Runnable {
 
 	public static Logger log = LogSupport.getAutohomelog();
-	
+
 	private String id;
-	
+
 	private String url;
-	
+
+	private static String outputFilePath;
+
 	public AutoHomeMobileReputationDetailHtmlCrawl(String url) {
 		this.url = url;
 		this.id = url.substring(url.indexOf("view_") + 5, url.indexOf(".html"));
@@ -52,33 +56,47 @@ public class AutoHomeMobileReputationDetailHtmlCrawl implements Runnable {
 		HttpRequestHeader header = new HttpRequestHeader();
 		header.setUrl(url);
 		String html = AutohomeCommonHttp.getMobileReputationDetail(header);
-		if (null != html && !html.contains("verify-box") && !html.contains("您的访问出现异常")
-				&& !html.contains("No such file or directory") && !html.contains("File or directory not found")
-				&& !html.contains("由于您的网络存在安全问题")
-				&& html.contains(id)) {
+		if (null != html && !html.contains("verify-box") && !html.contains("您的访问出现异常") && !html.contains("No such file or directory") && !html.contains("File or directory not found")
+				&& !html.contains("由于您的网络存在安全问题") && html.contains(id)) {
 			try {
-				HtmlDataUtil.saveData("D:/data/autohome/" + id + ".html", html);
+				HtmlDataUtil.saveData(outputFilePath + id + ".html", html);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			ReputationCrawled tc = new ReputationCrawled();
 			tc.setReputationUrl(url);
-			tc.setId(id);;
-			
+			tc.setId(id);
+
 			FirstCacheHolder.getInstance().submitFirstCache(new SqlEntity(tc, DataSource.DATASOURCE_SGM, SqlType.PARSE_INSERT));
 		} else {
 			log.error("有误不能保存");
 		}
-	
+
 	}
-	
+
 	public static void main(String[] args) {
-//		String sql = "select top 500 ReputationUrl from dbo.F_ReputationList_P02 A "
-//				+ "where PublishTime > '2018-07-27 00:00:00' "
-//				+ "and not EXISTS (select 1 from dbo.F_Reputation_Crawled B where SUBSTRING(A.ReputationUrl, charindex('view_', A.ReputationUrl) + 5, 26) = B.Id)";
-		String sql = "select top 500 ReputationUrl from dbo.F_ReputationList_P02 A "
-				+ "where convert(varchar(20), PublishTime, 23) BETWEEN '2018-07-01' and '2018-07-31' "
-				+ "and convert(varchar(20), InsertTime, 23) = '2018-08-01' "
+		// 保存文件路径
+		// 获得当前时间 创建文件夹
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+		String date = df.format(new Date());
+		String filePath = "autoHomeReputationDetailHtml-" + date;
+		System.out.println(filePath);
+		File autohomedir = new File("autoHomeReputationHtml");
+		if (!autohomedir.exists()) {
+			autohomedir.mkdirs();
+		}
+		File onetimesdir = new File("autohomeReputationHtml/" + filePath);
+		if (!onetimesdir.exists()) {
+			onetimesdir.mkdirs();
+		}
+		outputFilePath = onetimesdir.getPath() + "/";
+		// String sql = "select top 500 ReputationUrl from dbo.F_ReputationList_P02 A "
+		// + "where PublishTime > '2018-07-27 00:00:00' "
+		// + "and not EXISTS (select 1 from dbo.F_Reputation_Crawled B where
+		// SUBSTRING(A.ReputationUrl, charindex('view_', A.ReputationUrl) + 5, 26) =
+		// B.Id)";
+		String sql = "select  ReputationUrl from dbo.F_ReputationList_P02 A " + "where convert(varchar(20), PublishTime, 23) BETWEEN '2018-08-01' and '2018-08-31' "
+				+ "and convert(varchar(20), InsertTime, 23) >= '2018-08-27' "
 				+ "and not EXISTS (select 1 from dbo.F_Reputation_Crawled B where SUBSTRING(A.ReputationUrl, charindex('view_', A.ReputationUrl) + 5, 26) = B.Id)";
 
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
@@ -86,7 +104,7 @@ public class AutoHomeMobileReputationDetailHtmlCrawl implements Runnable {
 		int count = 0;
 		try {
 			while (true) {
-				count ++;
+				count++;
 				log.info("##################" + count);
 				List<ReputationCrawled> list = iGeneralJdbcUtils.queryForListObject(new SqlEntity(sql, DataSource.DATASOURCE_SGM, SqlType.PARSE_NO), ReputationCrawled.class);
 				log.info("获取未抓取个数：" + list.size());
@@ -95,7 +113,7 @@ public class AutoHomeMobileReputationDetailHtmlCrawl implements Runnable {
 					for (ReputationCrawled ss : list) {
 						pool.submit(new AutoHomeMobileReputationDetailHtmlCrawl(ss.getReputationUrl()));
 					}
-					
+
 					pool.shutdown();
 
 					while (true) {
@@ -110,7 +128,7 @@ public class AutoHomeMobileReputationDetailHtmlCrawl implements Runnable {
 							}
 						}
 					}
-					
+
 				} else {
 					System.out.println("$$$$$$$$$$$$$$$" + count);
 					try {
@@ -125,7 +143,6 @@ public class AutoHomeMobileReputationDetailHtmlCrawl implements Runnable {
 		} finally {
 			System.out.println("##################" + count);
 		}
-	
-		
+
 	}
 }
