@@ -29,8 +29,6 @@ public class DianPingCommonDriver {
 
 	private static Logger log = LogSupport.getDianpinglog();
 
-	private static Logger log_test = LogSupport.getJdlog();
-
 	public static int count = 0;
 	
 	/**
@@ -77,13 +75,23 @@ public class DianPingCommonDriver {
 
 			// driver.get("https://account.dianping.com/login?redir=http%3A%2F%2Fwww.dianping.com%2F");
 			driver.get("http://www.dianping.com");
-//			driver.get(header.getUrl());
-			log.info(driver.getPageSource());
+			driver.get("http://www.dianping.com/shop/4013473/review_all?queryType=sortType&&queryVal=latest");
 			Set<Cookie> cookieSet = driver.manage().getCookies();
 			for (Cookie temp : cookieSet) {
 				System.out.println(temp.getName() + "=" + temp.getValue());
 			}
+			driver.get("http://www.dianping.com/shop/4013473/review_all/p2?queryType=sortType&queryVal=latest");
+			log.info("#############");
+			cookieSet = driver.manage().getCookies();
+			for (Cookie temp : cookieSet) {
+				System.out.println(temp.getName() + "=" + temp.getValue());
+			}
 		} catch (Exception e) {
+			if (null != driver) {
+				driver.close();
+				driver.quit();
+			}
+			log.error(e);
 			getShopComment(header, null);
 		}
 		
@@ -154,34 +162,34 @@ public class DianPingCommonDriver {
 		IGeneralJdbcUtils iGeneralJdbcUtils = (IGeneralJdbcUtils) ApplicationContextHolder
 				.getBean(GeneralJdbcUtils.class);
 		long date = System.currentTimeMillis() / 1000;
-		String sql = "with temp as ("
-				+ " select ipAddress, dly_expiretime from ProxyIP1.dbo.proxyIp where status = 1 and dly_expiretime - 500 > "
-				+ date + " UNION ALL"
-				+ " select ipAddress, dly_expiretime from ProxyIP2.dbo.proxyIp where status = 1 and dly_expiretime - 500 > "
-				+ date + " UNION ALL"
-				+ " select ipAddress, dly_expiretime from ProxyIP3.dbo.proxyIp where status = 1 and dly_expiretime - 500 > "
-				+ date + " UNION ALL"
-				+ " select ipAddress, dly_expiretime from ProxyIP4.dbo.proxyIp where status = 1 and dly_expiretime - 500 > "
-				+ date + " UNION ALL"
-				+ " select ipAddress, dly_expiretime from ProxyIP5.dbo.proxyIp where status = 1 and dly_expiretime - 500 > "
-				+ date + " UNION ALL"
-				+ " select ipAddress, dly_expiretime from ProxyIP6.dbo.proxyIp where status = 1 and dly_expiretime - 500 > "
-				+ date + " UNION ALL"
-				+ " select ipAddress, dly_expiretime from ProxyIP7.dbo.proxyIp where status = 1 and dly_expiretime - 500 > "
-				+ date + " UNION ALL"
-				+ " select ipAddress, dly_expiretime from ProxyIP8.dbo.proxyIp where status = 1 and dly_expiretime - 500 > "
-				+ date + ") select top 1 * from temp order by newid()";
-		Map<String, Object> map = iGeneralJdbcUtils
-				.queryOne(new SqlEntity(sql, DataSource.DATASOURCE_ProxyIP, SqlType.PARSE_NO));
-
-		String ipAddress = map.get("ipAddress").toString();
-		ipAddress = "1.195.25.33:57112";
-		String[] ips = ipAddress.split(":");
-		Proxy proxy = new Proxy(ips[0], NumberUtils.toInt(ips[1]));
+//		String sql = "with temp as ("
+//				+ " select ipAddress, dly_expiretime from ProxyIP1.dbo.proxyIp where status = 1 and dly_expiretime - 500 > "
+//				+ date + " UNION ALL"
+//				+ " select ipAddress, dly_expiretime from ProxyIP2.dbo.proxyIp where status = 1 and dly_expiretime - 500 > "
+//				+ date + " UNION ALL"
+//				+ " select ipAddress, dly_expiretime from ProxyIP3.dbo.proxyIp where status = 1 and dly_expiretime - 500 > "
+//				+ date + " UNION ALL"
+//				+ " select ipAddress, dly_expiretime from ProxyIP4.dbo.proxyIp where status = 1 and dly_expiretime - 500 > "
+//				+ date + " UNION ALL"
+//				+ " select ipAddress, dly_expiretime from ProxyIP5.dbo.proxyIp where status = 1 and dly_expiretime - 500 > "
+//				+ date + " UNION ALL"
+//				+ " select ipAddress, dly_expiretime from ProxyIP6.dbo.proxyIp where status = 1 and dly_expiretime - 500 > "
+//				+ date + " UNION ALL"
+//				+ " select ipAddress, dly_expiretime from ProxyIP7.dbo.proxyIp where status = 1 and dly_expiretime - 500 > "
+//				+ date + " UNION ALL"
+//				+ " select ipAddress, dly_expiretime from ProxyIP8.dbo.proxyIp where status = 1 and dly_expiretime - 500 > "
+//				+ date + ") select top 1 * from temp order by newid()";
+//		Map<String, Object> map = iGeneralJdbcUtils
+//				.queryOne(new SqlEntity(sql, DataSource.DATASOURCE_ProxyIP, SqlType.PARSE_NO));
+//
+//		String ipAddress = map.get("ipAddress").toString();
+//		ipAddress = "1.195.25.33:57112";
+//		String[] ips = ipAddress.split(":");
+//		Proxy proxy = new Proxy(ips[0], NumberUtils.toInt(ips[1]));
 
 		WebDriverConfig config = new WebDriverConfig();
-		config.setProxy(proxy);
-//		config.setUserDataDir("temp/" + UUID.randomUUID());
+//		config.setProxy(proxy);
+		config.setUserDataDir("/temp/" + UUID.randomUUID());
 		WebDriver driver = WebDriverSupport.getChromeDriverInstance(config);
 		return driver;
 	}
@@ -189,6 +197,7 @@ public class DianPingCommonDriver {
 	public static void main(String[] args) {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		getShopComment(null, null);
+//		getShopCommentByLogin(null);
 	}
 
 }

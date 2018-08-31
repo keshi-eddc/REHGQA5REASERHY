@@ -174,7 +174,7 @@ public class DianPingCommonRequest extends HttpClientSupport {
 			
 		}
 		
-//		header.setCookie("cy=1; cye=shanghai; _lxsdk_cuid=164ff3759fcc8-0ecb77c2df43f1-3c3c520d-1fa400-164ff3759fdc8; _lxsdk=164ff3759fcc8-0ecb77c2df43f1-3c3c520d-1fa400-164ff3759fdc8; _hc.v=de179e2c-3e70-c5f3-5af4-7b7b4f2d309e.1533290175; _dp.ac.v=308386d9-f1b7-41ab-94b4-cfdf610c4b33; dper=60e25c1799bd2229ee0e398e9e50f5d05df543700781f5e9ed5f3e6870b11b16a07b7933a14543665a530a622b192adb19cd755547127f4803460f7476fa9a48d529e1eff44affc7ef2cd9889fa7be3c4fe22e86c7d06277f72216da490648f4; ll=7fd06e815b796be3df069dec7836c3df; ua=17151837694; ctu=f5539fc230d3b0f5512266208879744a3bda46f23d8f6626b3cd626c281a04a3; s_ViewType=10; _lxsdk_s=1650d4b9879-6b4-544-057%7C%7C315");
+		header.setCookie("_lxsdk_cuid=16566267d8ec8-0b37b24ddc3eae-37664109-12ae3a-16566267d8ec8; _lxsdk=16566267d8ec8-0b37b24ddc3eae-37664109-12ae3a-16566267d8ec8; _hc.v=e5bd008b-1917-2e8d-01d7-2734726687b4.1535017123; s_ViewType=10; cy=2; cye=beijing; dper=60e25c1799bd2229ee0e398e9e50f5d0b41b2316c9c6f68e5c644a62ca446318cd98ce345724d3d990f5b854ed706988a5f6b09f9a4bbb5c3338c7a75d73532c17d7bd37bdf72e0fb6ade73cb21c8ddd3b349fd07d4b22158b6e26b3235b1a0c; ll=7fd06e815b796be3df069dec7836c3df; ua=17151837694; ctu=f5539fc230d3b0f5512266208879744a54114ed9a3821c508cbda8a7e76738f8; _lxsdk_s=16588b3d8d3-686-480-673%7C%7C5242");
 		
 //		header.setAutoPcUa(true);
 		header.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/535.19");

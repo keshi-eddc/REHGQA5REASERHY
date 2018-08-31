@@ -51,7 +51,7 @@ public class SelfIpTest implements Runnable {
 		HttpRequestHeader header = new HttpRequestHeader();
 		header.setUrl("http://2018.ip138.com/ic.asp");
 		header.setProxyType(ProxyType.NONE);
-		header.setProxy(new Proxy(source, port));
+//		header.setProxy(new Proxy(source, port));
 		header.setAutoPcUa(true);
 		header.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
 		header.setAcceptEncoding("gzip, deflate");
@@ -69,6 +69,7 @@ public class SelfIpTest implements Runnable {
 		ip.setPort(port);
 		if (null != rsp) {
 			String html = rsp.getContent();
+			log.info(html);
 			if (StringUtils.isNotEmpty(html)) {
 				Document doc = Jsoup.parse(html);
 				
@@ -83,7 +84,7 @@ public class SelfIpTest implements Runnable {
 	}
 	
 	public static void main(String[] args) {
-		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+//		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		
 		List<String[]> sourceList = new ArrayList<>();
 		String[] source1 = new String[] {"192.168.6.201", "8888"};
@@ -105,7 +106,7 @@ public class SelfIpTest implements Runnable {
 		
 		ExecutorService pool = Executors.newFixedThreadPool(sourceList.size());
 //		
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 10; i++) {
 			String[] source = sourceList.get(i % sourceList.size());
 			pool.execute(new SelfIpTest(source[0], NumberUtils.toInt(source[1], 8888)));
 		}

@@ -210,7 +210,7 @@ public class DianPingShopCommentCrawl implements Runnable {
 	private int getTotalPage () {
 		int totalPage = -1;
 		HttpRequestHeader header = new HttpRequestHeader();
-		header.setUrl("http://www.dianping.com/shop/" + dianpingShopInfo.getShopId() +"/review_all");//?queryType=sortType&queryVal=latest");
+		header.setUrl("http://www.dianping.com/shop/" + dianpingShopInfo.getShopId() +"/review_all?queryType=sortType&&queryVal=latest");
 		header.setReferer("http://www.dianping.com/shop/" + dianpingShopInfo.getShopId() + "/review_all");
 		header.setProxyType(ProxyType.PROXY_STATIC_DLY);
 		header.setProject(Project.CARGILL);
