@@ -1,9 +1,5 @@
 package com.edmi.site.dianping.entity;
 
-import java.util.Date;
-
-import org.apache.commons.lang3.time.DateFormatUtils;
-
 import fun.jerry.entity.annotation.ColumnMapping;
 import fun.jerry.entity.annotation.LogicalPrimaryKey;
 import fun.jerry.entity.annotation.TableMapping;
@@ -13,7 +9,7 @@ import fun.jerry.entity.annotation.TableMapping;
  * @author conner
  *
  */
-@TableMapping("Dianping_ShopInfo_Cargill_0809")
+@TableMapping("Dianping_ShopInfo_Cargill")
 public class DianpingShopInfo_Cargill extends DianpingShopInfo_Common {
 
 	private static final long serialVersionUID = 4217070017854978866L;
@@ -28,9 +24,6 @@ public class DianpingShopInfo_Cargill extends DianpingShopInfo_Common {
 	@LogicalPrimaryKey
 	@ColumnMapping("keyword")
 	private String keyword;
-	
-	@ColumnMapping("data_type")
-	private String dataType;
 	
 	@ColumnMapping("version")
 	private String version = Version.version_last_month;
@@ -57,14 +50,6 @@ public class DianpingShopInfo_Cargill extends DianpingShopInfo_Common {
 
 	public void setVersion(String version) {
 		this.version = version;
-	}
-
-	public String getDataType() {
-		return dataType;
-	}
-
-	public void setDataType(String dataType) {
-		this.dataType = dataType;
 	}
 	
 }

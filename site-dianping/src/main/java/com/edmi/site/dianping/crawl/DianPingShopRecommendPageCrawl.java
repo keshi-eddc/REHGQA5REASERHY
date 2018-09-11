@@ -123,9 +123,9 @@ public class DianPingShopRecommendPageCrawl implements Runnable {
 		
 		StringBuilder sql = new StringBuilder();
 		sql.append("select distinct shop_id, shop_url from Dianping_ShopInfo_Cargill A "
-				+ "where version = '201807' "
+				+ "where version = '201808' "
 //				+ "and category_id = 'g107' "
-				+ "and shop_id not in (select distinct shop_id from dbo.Dianping_Shop_Recommend_Info where version = '201807')"
+				+ "and shop_id not in (select distinct shop_id from dbo.Dianping_Shop_Recommend_Info where version = '201808')"
 				);
 		
 		while (true) {

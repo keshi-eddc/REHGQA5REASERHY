@@ -107,29 +107,29 @@ public class CargillDianPingShopListCrawl implements Runnable {
 		int totalPage = 1;
 		totalList.clear();
 		for (int page = 1; page <= totalPage; page ++) {
-//			while (true) {
-				HttpRequestHeader header = new HttpRequestHeader();
-				if (type == 1) {
-//					header.setUrl("http://www.dianping.com/" + cityEnName + "/" + primaryCategoryId + "/" + categoryId + "o2p" + page);
-					header.setUrl("http://www.dianping.com/" + cityEnName + "/" + primaryCategoryId + "/" + categoryId + "o4p" + page);
-//					if (page == 1) {
-//						header.setReferer("http://www.dianping.com/" + cityEnName + "/" + primaryCategoryId + "/" + categoryId + "o2");
-						header.setReferer("http://www.dianping.com/" + cityEnName + "/" + primaryCategoryId + "/" + categoryId + "o4");
-//					} else {
-//						header.setReferer("http://www.dianping.com/" + cityEnName + "/" + primaryCategoryId + "/" + categoryId + "o2p" + (page - 1));
-//					}
-				} else {
-					header.setUrl("http://www.dianping.com/search/keyword/" + cityId + "/" + primaryCategoryId.replace("ch", "") + "_" + keyword + "/o2p" + page);
-//					if (page == 1) {
-						header.setReferer("http://www.dianping.com/search/keyword/" + cityId + "/" + primaryCategoryId.replace("ch", "") + "_" + keyword + "/o2");
-//					} else {
-//						header.setReferer("http://www.dianping.com/search/keyword/" + cityId + "/" + primaryCategoryId.replace("ch", "") + "_" + keyword + "/o2p" + (page - 1));
-//					}
-				}
-				header.setProxyType(ProxyType.PROXY_STATIC_DLY);
-				header.setProject(Project.CARGILL);
-				header.setSite(Site.DIANPING);
-				header.setMaxTryTimes(20);
+			
+			HttpRequestHeader header = new HttpRequestHeader();
+			if (type == 1) {
+				header.setUrl("http://www.dianping.com/" + cityEnName + "/" + primaryCategoryId + "/" + categoryId + "o2p" + page);
+//				if (page == 1) {
+					header.setReferer("http://www.dianping.com/" + cityEnName + "/" + primaryCategoryId + "/" + categoryId + "o2");
+//				} else {
+//					header.setReferer("http://www.dianping.com/" + cityEnName + "/" + primaryCategoryId + "/" + categoryId + "o2p" + (page - 1));
+//				}
+			} else {
+				header.setUrl("http://www.dianping.com/search/keyword/" + cityId + "/" + primaryCategoryId.replace("ch", "") + "_" + keyword + "/o2p" + page);
+//				if (page == 1) {
+					header.setReferer("http://www.dianping.com/search/keyword/" + cityId + "/" + primaryCategoryId.replace("ch", "") + "_" + keyword + "/o2");
+//				} else {
+//					header.setReferer("http://www.dianping.com/search/keyword/" + cityId + "/" + primaryCategoryId.replace("ch", "") + "_" + keyword + "/o2p" + (page - 1));
+//				}
+			}
+			header.setProxyType(ProxyType.PROXY_STATIC_DLY);
+			header.setProject(Project.CARGILL);
+			header.setSite(Site.DIANPING);
+			header.setMaxTryTimes(20);
+			
+			while (true) {
 				
 				String pageHtml = DianPingCommonRequest.getShopList(header);
 				
@@ -143,9 +143,9 @@ public class CargillDianPingShopListCrawl implements Runnable {
 					Elements shopElements = pageDoc.select("#shop-all-list ul li");
 					if (CollectionUtils.isEmpty(shopElements)) {
 						log.info(header.getUrl() + " 请求成功，未发现店铺列表,继续抓取");
-//						continue;
-						crawl();
-						break;
+						continue;
+//						crawl();
+//						break;
 					}
 				}
 				
@@ -160,16 +160,17 @@ public class CargillDianPingShopListCrawl implements Runnable {
 				List<DianpingShopInfo> list = DianpingParser.parseShopList(pageDoc, page);
 				if (list.size() == 15) {
 					totalList.addAll(save(list, page, totalPage));
-//					break;
+					break;
 				} else {
 					log.info(header.getUrl() + " 第 " + page + " 页 抓取到的店铺数量不足15条 " + list.size());
+					continue;
 //					page = 1;
 //					totalList.clear();
 //					break;
-					crawl();
-					break;
+//					crawl();
+//					break;
 				}
-//			}
+			}
 		}
 	}
 
@@ -190,7 +191,6 @@ public class CargillDianPingShopListCrawl implements Runnable {
 				shopCargill.setRegionId(StringUtils.isNotEmpty(regionId) ? regionId : "");
 				shopCargill.setCityId(StringUtils.isNotEmpty(cityId) ? cityId : "");
 				shopCargill.setKeyword(StringUtils.isNotEmpty(keyword) ? keyword : "");
-				shopCargill.setDataType("口味");
 				
 				temp.add(shopCargill);
 				

@@ -58,7 +58,7 @@ public class DianPingShopCommentCrawl implements Runnable {
 						"select max(comment_time) as commentTime from dbo.Dianping_Shop_Comment where shop_id = '"
 								+ dianpingShopInfo.getShopId() + "'",
 						DataSource.DATASOURCE_DianPing, SqlType.PARSE_NO));
-		if (null != map && map.containsKey("commentTime")) {
+		if (null != map && map.containsKey("commentTime") && null != map.get("commentTime")) {
 			try {
 				maxCommentTime = sdf.parse(map.get("commentTime").toString()).getTime();
 			} catch (ParseException e) {
@@ -76,132 +76,136 @@ public class DianPingShopCommentCrawl implements Runnable {
 			pageList.add(page);
 		}
 		for (int page = 2; page <= totalPage; page ++) {
-			if (parseComment(page, totalPage)) {
+			if (getCommentByPage(page, totalPage)) {
 				break;
 			}
 		}
 		log.info("店铺评论抓取结束 ： " + dianpingShopInfo.getShopId());
 	}
 	
-	private boolean parseComment(int page, int totalPage) {
+	private boolean parseComment(Document doc, int page, int totalPage) {
+		boolean flag = false;
+		Elements commentList = doc.select(".reviews-items ul li .main-review");
+			
+		log.info(dianpingShopInfo.getShopId() + " 总页数 " + totalPage + " 当前页数 " + page + " 该页有 " + commentList.size() + " 条记录");
+		
+		for (Element shop : commentList) {
+			try {
+
+				DianpingShopComment comment = new DianpingShopComment();
+				comment.setShopId(dianpingShopInfo.getShopId());
+				
+				comment.setPage(page);
+				
+				Element userIdEle = shop.select("a[href*=member]").first();
+				comment.setUserId(null != userIdEle ? userIdEle.attr("href").replace("/member/", "") : "");
+				comment.setUserName(null != userIdEle ? userIdEle.text() : "");
+				
+				Element userLevelEle = shop.select(".dper-info .user-rank-rst").first();
+				comment.setUserLevel(null != userLevelEle ? userLevelEle.classNames().toString() : "");
+				
+				Element isVipEle = shop.select(".dper-info .vip").first();
+				comment.setIsVip(null != isVipEle ? 1 : 0);
+				
+				Element commentStar = shop.select(".review-rank .star").first();
+				comment.setCommentStar(null != commentStar ? commentStar.classNames().toString() : "");
+				
+				Elements scores = shop.select(".review-rank .score .item");
+				comment.setTasteComment("");
+				comment.setEnvironmentComment("");
+				comment.setServiceComment("");
+				if (CollectionUtils.isNotEmpty(scores)) {
+					
+					for (Element score : scores) {
+						String text = score.text().trim();
+						if (text.contains("口味")) {
+							comment.setTasteComment(text.replace("口味：", "").trim());
+						} else if (text.contains("环境")) {
+							comment.setEnvironmentComment(text.replace("环境：", "").trim());
+						} else if (text.contains("服务")) {
+							comment.setServiceComment(text.replace("服务：", "").trim());
+						} else if (text.contains("人均")) {
+							comment.setAvgPrice(text.replace("人均：", "").trim());
+						}
+					}
+				}
+				
+				Element commentEle = shop.select(".review-words").first();
+				comment.setComment(null != commentEle ? commentEle.html().replace("&nbsp;", ",").trim() : "");
+				
+				Elements recommentDishEles = shop.select(".review-recommend a");
+				if (CollectionUtils.isNotEmpty(recommentDishEles)) {
+					StringBuilder dish = new StringBuilder();
+					for (Element dishEle : recommentDishEles) {
+						dish.append(dishEle.text()).append(" ");
+					}
+					comment.setRecommendDish(dish.toString());
+				} else {
+					comment.setRecommendDish("");
+				}
+				
+				Element commentTimeEle = shop.select(".misc-info .time").first();
+				String commentTime = null != commentTimeEle ? commentTimeEle.text().trim() : "";
+				if (commentTime.contains("更新于")) {
+					comment.setFirstCommentTime(commentTime.substring(0, 10).trim());
+					comment.setCommentTime(commentTime.substring(commentTime.indexOf("更新于") + 3).trim());
+				} else {
+					comment.setCommentTime(commentTime);
+				}
+				
+				Element commentIdEle = shop.select(".actions a[data-id]").first();
+				comment.setCommentId(null != commentIdEle ? commentIdEle.attr("data-id") : "");
+				
+				if (DateFormatSupport.before(comment.getCommentTime(), DateFormatSupport.YYYY_MM_DD, new java.util.Date(1525104000000L))
+						|| maxCommentTime >= sdf.parse(comment.getCommentTime()).getTime()) {
+					flag = true;
+					log.info(dianpingShopInfo.getShopId() + " 页数 " + page + " 评论时间早于指定截止时间，中断抓取 " + comment.getCommentTime());
+					break;
+				}
+				
+				Element praiseEle = shop.select(".actions .praise").first().nextElementSibling();
+				comment.setFavoriteNum(praiseEle.hasClass("col-exp")
+						? NumberUtils.toInt(praiseEle.text().replace("(", "").replace(")", ""), 0) : 0);
+				
+				Element replyEle = shop.select(".actions .reply").first().nextElementSibling();
+				comment.setReplyNum(replyEle.hasClass("col-exp")
+						? NumberUtils.toInt(replyEle.text().replace("(", "").replace(")", ""), 0) : 0);
+				
+				Element collectionEle = shop.select(".actions .favor").first().nextElementSibling();
+				comment.setCollectNum(collectionEle.hasClass("col-exp")
+						? NumberUtils.toInt(collectionEle.text().replace("(", "").replace(")", ""), 0) : 0);
+				
+				FirstCacheHolder.getInstance().submitFirstCache(new SqlEntity(comment, DataSource.DATASOURCE_DianPing, SqlType.PARSE_INSERT));
+			
+				log.info(dianpingShopInfo.getShopId() + totalPage + " 当前页数 " + page + " 向缓存中添加一条记录");
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return flag;
+	}
+	
+	private boolean getCommentByPage(int page, int totalPage) {
 		boolean flag = false;
 		HttpRequestHeader header = new HttpRequestHeader();
 		header.setUrl("http://www.dianping.com/shop/" + dianpingShopInfo.getShopId() 
-				+ "/review_all/p" + page) ;//+ "?queryType=sortType&queryVal=latest");
+				+ "/review_all/p" + page + "?queryType=sortType&queryVal=latest");
 		if (page == 1) {
 			header.setReferer("http://www.dianping.com/shop/" + dianpingShopInfo.getShopId() 
-				+ "/review_all");//?queryType=sortType&queryVal=latest");
+				+ "/review_all?queryType=sortType&queryVal=latest");
 		} else {
 			header.setReferer("http://www.dianping.com/shop/" + dianpingShopInfo.getShopId() 
 				+ "/review_all/p" + (page - 1));// + "?queryType=sortType&queryVal=latest");
 		}
-		header.setProxyType(ProxyType.PROXY_STATIC_DLY);
-		header.setProject(Project.CARGILL);
-		header.setSite(Site.DIANPING);
 		String html = DianPingCommonRequest.getShopComment(header);
 		Document doc = Jsoup.parse(html);
 		Elements commentList = doc.select(".reviews-items ul li .main-review");
 		if (CollectionUtils.isNotEmpty(commentList)) {
-			
-			log.info(dianpingShopInfo.getShopId() + " 总页数 " + totalPage + " 当前页数 " + page + " 该页有 " + commentList.size() + " 条记录");
-			
-			for (Element shop : commentList) {
-				try {
-
-					DianpingShopComment comment = new DianpingShopComment();
-					comment.setShopId(dianpingShopInfo.getShopId());
-					
-					comment.setPage(page);
-					
-					Element userIdEle = shop.select("a[href*=member]").first();
-					comment.setUserId(null != userIdEle ? userIdEle.attr("href").replace("/member/", "") : "");
-					comment.setUserName(null != userIdEle ? userIdEle.text() : "");
-					
-					Element userLevelEle = shop.select(".dper-info .user-rank-rst").first();
-					comment.setUserLevel(null != userLevelEle ? userLevelEle.classNames().toString() : "");
-					
-					Element isVipEle = shop.select(".dper-info .vip").first();
-					comment.setIsVip(null != isVipEle ? 1 : 0);
-					
-					Element commentStar = shop.select(".review-rank .star").first();
-					comment.setCommentStar(null != commentStar ? commentStar.classNames().toString() : "");
-					
-					Elements scores = shop.select(".review-rank .score .item");
-					comment.setTasteComment("");
-					comment.setEnvironmentComment("");
-					comment.setServiceComment("");
-					if (CollectionUtils.isNotEmpty(scores)) {
-						
-						for (Element score : scores) {
-							String text = score.text().trim();
-							if (text.contains("口味")) {
-								comment.setTasteComment(text.replace("口味：", "").trim());
-							} else if (text.contains("环境")) {
-								comment.setEnvironmentComment(text.replace("环境：", "").trim());
-							} else if (text.contains("服务")) {
-								comment.setServiceComment(text.replace("服务：", "").trim());
-							} else if (text.contains("人均")) {
-								comment.setAvgPrice(text.replace("人均：", "").trim());
-							}
-						}
-					}
-					
-					Element commentEle = shop.select(".review-words").first();
-					comment.setComment(null != commentEle ? commentEle.html().replace("&nbsp;", ",").trim() : "");
-					
-					Elements recommentDishEles = shop.select(".review-recommend a");
-					if (CollectionUtils.isNotEmpty(recommentDishEles)) {
-						StringBuilder dish = new StringBuilder();
-						for (Element dishEle : recommentDishEles) {
-							dish.append(dishEle.text()).append(" ");
-						}
-						comment.setRecommendDish(dish.toString());
-					} else {
-						comment.setRecommendDish("");
-					}
-					
-					Element commentTimeEle = shop.select(".misc-info .time").first();
-					String commentTime = null != commentTimeEle ? commentTimeEle.text().trim() : "";
-					if (commentTime.contains("更新于")) {
-						comment.setFirstCommentTime(commentTime.substring(0, 10).trim());
-						comment.setCommentTime(commentTime.substring(commentTime.indexOf("更新于") + 3).trim());
-					} else {
-						comment.setCommentTime(commentTime);
-					}
-					
-					Element commentIdEle = shop.select(".actions a[data-id]").first();
-					comment.setCommentId(null != commentIdEle ? commentIdEle.attr("data-id") : "");
-					
-					if (DateFormatSupport.before(comment.getCommentTime(), DateFormatSupport.YYYY_MM_DD, new java.util.Date(1483200000000L))
-							|| maxCommentTime >= sdf.parse(comment.getCommentTime()).getTime()) {
-						flag = true;
-						log.info(dianpingShopInfo.getShopId() + " 页数 " + page + " 评论时间早于指定截止时间，中断抓取 " + comment.getCommentTime());
-						break;
-					}
-					
-					Element praiseEle = shop.select(".actions .praise").first().nextElementSibling();
-					comment.setFavoriteNum(praiseEle.hasClass("col-exp")
-							? NumberUtils.toInt(praiseEle.text().replace("(", "").replace(")", ""), 0) : 0);
-					
-					Element replyEle = shop.select(".actions .reply").first().nextElementSibling();
-					comment.setReplyNum(replyEle.hasClass("col-exp")
-							? NumberUtils.toInt(replyEle.text().replace("(", "").replace(")", ""), 0) : 0);
-					
-					Element collectionEle = shop.select(".actions .favor").first().nextElementSibling();
-					comment.setCollectNum(collectionEle.hasClass("col-exp")
-							? NumberUtils.toInt(collectionEle.text().replace("(", "").replace(")", ""), 0) : 0);
-					
-					FirstCacheHolder.getInstance().submitFirstCache(new SqlEntity(comment, DataSource.DATASOURCE_DianPing, SqlType.PARSE_INSERT));
-				
-					log.info(dianpingShopInfo.getShopId() + totalPage + " 当前页数 " + page + " 向缓存中添加一条记录");
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+			flag = parseComment(doc, page, totalPage);
 		} else {
 			log.info("总页数 " + totalPage + " 当前页数 " + page + " 该页应该有数据，但是没有发现, 重新请求");
-			parseComment(page, totalPage);
+			getCommentByPage(page, totalPage);
 		}
 		
 		return flag;
@@ -212,9 +216,7 @@ public class DianPingShopCommentCrawl implements Runnable {
 		HttpRequestHeader header = new HttpRequestHeader();
 		header.setUrl("http://www.dianping.com/shop/" + dianpingShopInfo.getShopId() +"/review_all?queryType=sortType&&queryVal=latest");
 		header.setReferer("http://www.dianping.com/shop/" + dianpingShopInfo.getShopId() + "/review_all");
-		header.setProxyType(ProxyType.PROXY_STATIC_DLY);
-		header.setProject(Project.CARGILL);
-		header.setSite(Site.DIANPING);
+//		header.setReferer("http://www.dianping.com/shop/" + dianpingShopInfo.getShopId());
 		header.setMaxTryTimes(1);
 		String html = DianPingCommonRequest.getShopComment(header);
 		Document doc = Jsoup.parse(html);
@@ -231,7 +233,8 @@ public class DianPingShopCommentCrawl implements Runnable {
 			if (CollectionUtils.isNotEmpty(doc.select(".reviews-items ul li"))) {
 				Element pageEle = doc.select(".reviews-pages .PageLink").last();
 				totalPage = null != pageEle ? Integer.parseInt(pageEle.text().trim()) : 1;
-				parseComment(1, totalPage);
+//				getCommentByPage(1, totalPage);
+				parseComment(doc, 1, totalPage);
 			} else {
 				log.info(header.getUrl() + " 应该有评论，但是没有找到，重新请求");
 				log.info(html);
