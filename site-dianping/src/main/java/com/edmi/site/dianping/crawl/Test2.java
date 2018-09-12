@@ -117,7 +117,7 @@ public class Test2 {
 	public static void test4() throws Exception {
 		HttpRequestHeader header = new HttpRequestHeader();
 		header.setUrl("http://www.dianping.com/shop/110269910/review_all/p4?queryType=sortType&queryVal=latest");
-		header.setCookie("_lxsdk_cuid=16566267d8ec8-0b37b24ddc3eae-37664109-12ae3a-16566267d8ec8; _lxsdk=16566267d8ec8-0b37b24ddc3eae-37664109-12ae3a-16566267d8ec8; _hc.v=e5bd008b-1917-2e8d-01d7-2734726687b4.1535017123; s_ViewType=10; ua=17151837694; ctu=f5539fc230d3b0f5512266208879744a54114ed9a3821c508cbda8a7e76738f8; cy=1; cye=shanghai; dper=60e25c1799bd2229ee0e398e9e50f5d0c7d85dbc3797d3c79d996b24a92992bee8b9dc428aecf0cfd254ee059529facf65f718097003c7f1971d1315d4d608c3049058195fbb852c65a57ef195cd146876619297edd30cb5950f47f06844ad55; ll=7fd06e815b796be3df069dec7836c3df; _lxsdk_s=%7C%7C0");
+		header.setCookie("cy=1; cye=shanghai; _lxsdk_cuid=165c2903ac133-0249a99527ad89-37664109-144000-165c2903ac2c8; _lxsdk=165c2903ac133-0249a99527ad89-37664109-144000-165c2903ac2c8; _hc.v=b5e9edec-c5b5-3a39-1559-986fa734ff90.1536567557; ua=17151837694; ctu=f5539fc230d3b0f5512266208879744a5252d5d2dcc20bf59b843c188410726d; dper=60e25c1799bd2229ee0e398e9e50f5d06921dd1ed9252d002e0bc49002a4cf056dd9d6c6c31b106d577ad28fe6cce22d964aa333c2d21a53972dccdcbadd5af8b94607c72e989786beab08e2ad8f19610b5a1ece30c4a5acef56bc6df4d1e6c7; ll=7fd06e815b796be3df069dec7836c3df; s_ViewType=10; _lxsdk_s=165c83382a6-cba-303-513%7C%7C1886");
 		header.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
 		header.setAcceptEncoding("gzip, deflate");
 		header.setAcceptLanguage("zh-CN,zh;q=0.9");
@@ -125,9 +125,10 @@ public class Test2 {
 		header.setConnection("keep-alive");
 		header.setHost("www.dianping.com");
 		header.setUpgradeInsecureRequests("1");
-//		header.setProxyType(ProxyType.PROXY_STATIC_DLY);
+		header.setProxyType(ProxyType.PROXY_CLOUD_ABUYUN);
+//		header.setProxyType(ProxyType.NONE);
 //		header.setProxy(new Proxy("1.197.59.158", 46668));
-		header.setProxyType(ProxyType.NONE);
+//		header.setProxyType(ProxyType.NONE);
 		header.setProject(Project.CARGILL);
 		header.setSite(Site.DIANPING);
 		
@@ -147,14 +148,20 @@ public class Test2 {
 	}
 	
 	public static void test6() throws Exception {
-		Document doc = Jsoup.connect("http://2018.ip138.com/ic.asp")
-		.proxy("223.202.131.27", 377)
-//		.validateTLSCertificates(false)//忽略证书认证,每种语言客户端都有类似的API
-//		.header("Cookie", "cy=1; cye=shanghai; lgtoken=029e0b558-acdf-49e0-9915-8528d6c6e888; dper=60e25c1799bd2229ee0e398e9e50f5d01b1bf1f4521c695c0f7d2c37d87a8e556201716871c37c8fdb2d33644a8d36ba60d0d7f6d89167c43ef21edc6e7883a6; ll=7fd06e815b796be3df069dec7836c3df; ua=17151837694; ctu=f5539fc230d3b0f5512266208879744ae361b2dfbb48c1dd356cafd19b8bfe9a; _lxsdk_cuid=165c22f5f23c8-0a05754dc2d6c6-37664109-144000-165c22f5f23c8; _lxsdk=165c22f5f23c8-0a05754dc2d6c6-37664109-144000-165c22f5f23c8; _hc.v=b560d026-e573-67bd-214e-d6294e5e1cf7.1536561211; s_ViewType=10; _lxsdk_s=165c22f5f24-8dc-3e6-471%7C%7C264")
-		.userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
-		.timeout(10000)
-		.get();
-		System.out.println(doc);
+		HttpRequestHeader header = new HttpRequestHeader();
+		header.setUrl("http://2018.ip138.com/ic.asp");
+		header.setProxyType(ProxyType.PROXY_CLOUD_ABUYUN);
+//		header.setProxy(new Proxy(source, port));
+		header.setAutoPcUa(true);
+		header.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+		header.setAcceptEncoding("gzip, deflate");
+		header.setCacheControl("no-cache");
+		header.setConnection("keep-alive");
+		header.setEncode("GB2312");
+		header.setHost("2018.ip138.com");
+		header.setUpgradeInsecureRequests("1");
+		header.setCookie("pgv_pvi=2987542528; ASPSESSIONIDQQDDQATB=OONPBKLCKDFFLEIICKHOMPJP; pgv_si=s6775525376; ASPSESSIONIDCSQRBCRC=ANMDEPCDMOKHMIGHLCCFNJBF; ASPSESSIONIDSSABQBTB=DLNIKPLCEAMPAELEELHDCLFH");
+		System.out.println(HttpClientSupport.get(header).getContent());
 	}
 
 	public static void main(String[] args) {
@@ -163,6 +170,7 @@ public class Test2 {
 		try {
 //			test3();
 			System.out.println(sdf_ym.parse("201805").getTime());
+			test4();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
