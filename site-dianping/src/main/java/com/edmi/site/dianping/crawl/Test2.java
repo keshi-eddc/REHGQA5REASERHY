@@ -1,6 +1,7 @@
 package com.edmi.site.dianping.crawl;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.UUID;
 
 import org.apache.http.client.ClientProtocolException;
@@ -157,8 +158,11 @@ public class Test2 {
 	}
 
 	public static void main(String[] args) {
+		SimpleDateFormat sdf_ym = new SimpleDateFormat("yyyyMM");
+		
 		try {
-			test3();
+//			test3();
+			System.out.println(sdf_ym.parse("201805").getTime());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

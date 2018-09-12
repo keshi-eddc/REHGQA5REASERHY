@@ -5,7 +5,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpStatus;
 import org.apache.http.ParseException;
@@ -241,11 +243,12 @@ public class DianPingCommonRequest extends HttpClientSupport {
 	}
 
 	public static String getShopComment(HttpRequestHeader header) {
+		String html = "";
 		header.setAccept("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
 		header.setAcceptEncoding("gzip, deflate");
 		header.setAcceptLanguage("zh-CN,zh;q=0.9");
 		header.setCacheControl("max-age=0");
-//		header.setConnection("keep-alive");
+		header.setConnection("keep-alive");
 		header.setHost("www.dianping.com");
 		header.setUpgradeInsecureRequests("1");
 //		header.setProxyType(ProxyType.PROXY_STATIC_DLY);
@@ -259,26 +262,41 @@ public class DianPingCommonRequest extends HttpClientSupport {
 //			log.info("本批次使用的电话号码 " + map.get("phone").toString());
 //			DianpingShopDetailCookie.COOKIES_DIANPING.add(map);
 //		}
-		
-		header.setCookie("_lxsdk_cuid=163398adff3c8-0756071197ecf8-3c3c5905-1fa400-163398adff861; _lxsdk=163398adff3c8-0756071197ecf8-3c3c5905-1fa400-163398adff861; _hc.v=c1643cb4-2817-c0ce-df43-6c9a7f488e9a.1525678793; s_ViewType=10; ctu=27b4dd10165d51481592ec2ad457c1138c45ca81be2e5d60ac85896ce51145c1; cy=1; cye=shanghai; ua=17151837694; lgtoken=08eabb2b3-3213-46d5-8aa5-4dbd6e6108dc; dper=60e25c1799bd2229ee0e398e9e50f5d00b4056ea3d7f7c9c7386d2724baf932f5f54aec81a867737cbdd0e17c5d75f1c02763de56edad46dd9a5c4ead75f6303b1ed55b78c3ab92e1c62dbff19d43d0654db5a854335236f6df3fcbccfeaa218; ll=7fd06e815b796be3df069dec7836c3df; _lxsdk_s=165c2c1cf16-a1-004-381%7C%7C231");
+		// e480
+//		header.setCookie("cy=1; cye=shanghai; _lxsdk_cuid=165cbb497f71b-079e729ff8133a-3b7c015b-100200-165cbb497f8c8; _lxsdk=165cbb497f71b-079e729ff8133a-3b7c015b-100200-165cbb497f8c8; _hc.v=5a8ea5df-5716-27af-c88c-be83d2e7b5e7.1536720935; lgtoken=02b2d7c4e-383f-41f0-83ec-4236699b97ab; dper=0832ebe832341c2ad870a925f362a0e6392138c98157421b92d0280ff956a262cac0c5290eb160cf1fa6ef1652f95d60cf61fe33d949f55b793dd3aeb786159fcc5e51747a8a10f9d8d004dba032223ab5fd95809cfd1d30fc12a7b1d151bbff; ll=7fd06e815b796be3df069dec7836c3df; ua=%E9%AD%94%E4%BA%BA%40%E6%99%AE%E4%B9%8C; ctu=946223b20ade88cd1373a6270d8145bfccd7072399a55b6b81992fb529b17be5; uamo=13651952625; s_ViewType=10; _lxsdk_s=165cbb497f9-c81-eeb-b3f%7C%7C372");
+		// dell linux
+		header.setCookie("cy=1; cye=shanghai; dper=4555ddfb45611ff0adbb6d5c3567817e45da99273011693cc41050c2580f6103d48b2e2d3ecaebed0c279ccee8ea2d8c7dffc22368ddefb454d33d55df07971b; ll=7fd06e815b796be3df069dec7836c3df; ua=dpuser_1496623320; ctu=ebb2def69af6e872943468635a643aef0a6c71d79721e7e067b5aedb48caf209; uamo=17681888571; _lxsdk_cuid=165cc259318c8-0b10cbc6641d11-3b7c015b-100200-165cc259318c8; _lxsdk=165cc259318c8-0b10cbc6641d11-3b7c015b-100200-165cc259318c8; _hc.v=0a36417d-7abb-3945-b335-48b4dd9d9aa9.1536728340; s_ViewType=10; _lxsdk_s=165cc25931a-cb1-6af-5ad%7C%7C253");
 		
 		header.setAutoPcUa(true);
 //		header.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/535.19");
 //		header.setUserAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
 //		header.setUserAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36");
-		header.setRequestSleepTime(30000);
+		header.setRequestSleepTime(10);
 		header.setMaxTryTimes(1);
 		HttpResponse response = get(header);
 		if (response.getCode() == HttpStatus.SC_OK) {
-			return response.getContent();
-		} else {
-//			return getShopComment(header);
-			return "";
+			html = response.getContent();
+//			Document doc = Jsoup.parse(html);
+			if (html.contains("抱歉！页面无法访问") || html.contains("很抱歉，您要访问的页面不存在")
+					) {
+				log.info(header.getUrl() + " 应该有评论，但是返回页面无法访问或页面不存在，重新请求");
+				try {
+					TimeUnit.MINUTES.sleep(1);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				getShopComment(header);
+			}
+		} else if (response.getCode() == HttpStatus.SC_FORBIDDEN) {
+			log.info("页面被禁止访问，请清除缓存后重新登录，拷贝Cookie");
+		}else {
+			html = "";
 		}
+		return html;
 	}
 	
 	public static String getShopCommentNew(HttpRequestHeader header) {
-		String html = "";
+		String html = "";	
 		CredentialsProvider credsProvider = new BasicCredentialsProvider();
 		credsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("379862802", "infopower"));
 		CloseableHttpClient httpClient = HttpClientBuilder.create()

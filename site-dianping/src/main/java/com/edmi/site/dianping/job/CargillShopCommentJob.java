@@ -82,7 +82,7 @@ public class CargillShopCommentJob {
 				count ++;
 				log.info("##################" + count);
 //				List<DianpingShopInfo> shopList = DianPingTaskRequest.getCommentShop(poolSize);
-				List<DianpingShopInfo> shopList = DianPingTaskRequest.getCommentShop(1);
+				List<DianpingShopInfo> shopList = DianPingTaskRequest.getCommentShop(5);
 				log.info("获取未抓取评论的店铺个数：" + shopList.size());
 				if (CollectionUtils.isNotEmpty(shopList)) {
 					ExecutorService pool = Executors.newFixedThreadPool(1);
@@ -99,7 +99,7 @@ public class CargillShopCommentJob {
 							break;
 						} else {
 							try {
-								TimeUnit.SECONDS.sleep(5);
+								TimeUnit.SECONDS.sleep(1);
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}

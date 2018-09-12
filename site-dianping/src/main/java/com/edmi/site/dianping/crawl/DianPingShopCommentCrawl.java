@@ -24,9 +24,6 @@ import fun.jerry.cache.jdbc.IGeneralJdbcUtils;
 import fun.jerry.common.ApplicationContextHolder;
 import fun.jerry.common.DateFormatSupport;
 import fun.jerry.common.LogSupport;
-import fun.jerry.common.enumeration.Project;
-import fun.jerry.common.enumeration.ProxyType;
-import fun.jerry.common.enumeration.Site;
 import fun.jerry.entity.system.DataSource;
 import fun.jerry.entity.system.SqlEntity;
 import fun.jerry.entity.system.SqlType;
@@ -48,6 +45,9 @@ public class DianPingShopCommentCrawl implements Runnable {
 	private long maxCommentTime = 0L; 
 	
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	private SimpleDateFormat sdf_ym = new SimpleDateFormat("yyyyMM");
+	
+	private long stopTime = 0L;
 
 	public DianPingShopCommentCrawl(DianpingShopInfo dianpingShopInfo) {
 		super();
@@ -61,6 +61,18 @@ public class DianPingShopCommentCrawl implements Runnable {
 		if (null != map && map.containsKey("commentTime") && null != map.get("commentTime")) {
 			try {
 				maxCommentTime = sdf.parse(map.get("commentTime").toString()).getTime();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		Map<String, Object> map_version = iGeneralJdbcUtils
+				.queryOne(new SqlEntity(
+						"select min(version) as version from dbo.Dianping_ShopInfo_Cargill where shop_id = '"
+								+ dianpingShopInfo.getShopId() + "'",
+						DataSource.DATASOURCE_DianPing, SqlType.PARSE_NO));
+		if (null != map_version && map_version.containsKey("version") && null != map_version.get("version")) {
+			try {
+				stopTime = sdf_ym.parse(map_version.get("version").toString()).getTime();
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -156,7 +168,7 @@ public class DianPingShopCommentCrawl implements Runnable {
 				Element commentIdEle = shop.select(".actions a[data-id]").first();
 				comment.setCommentId(null != commentIdEle ? commentIdEle.attr("data-id") : "");
 				
-				if (DateFormatSupport.before(comment.getCommentTime(), DateFormatSupport.YYYY_MM_DD, new java.util.Date(1525104000000L))
+				if (DateFormatSupport.before(comment.getCommentTime(), DateFormatSupport.YYYY_MM_DD, new java.util.Date(stopTime))
 						|| maxCommentTime >= sdf.parse(comment.getCommentTime()).getTime()) {
 					flag = true;
 					log.info(dianpingShopInfo.getShopId() + " 页数 " + page + " 评论时间早于指定截止时间，中断抓取 " + comment.getCommentTime());
@@ -177,7 +189,7 @@ public class DianPingShopCommentCrawl implements Runnable {
 				
 				FirstCacheHolder.getInstance().submitFirstCache(new SqlEntity(comment, DataSource.DATASOURCE_DianPing, SqlType.PARSE_INSERT));
 			
-				log.info(dianpingShopInfo.getShopId() + totalPage + " 当前页数 " + page + " 向缓存中添加一条记录");
+				log.info(dianpingShopInfo.getShopId() + " " + totalPage + " 当前页数 " + page + " 向缓存中添加一条记录");
 				
 			} catch (Exception e) {
 				e.printStackTrace();
