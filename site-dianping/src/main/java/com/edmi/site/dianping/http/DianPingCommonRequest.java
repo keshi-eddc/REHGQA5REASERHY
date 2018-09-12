@@ -263,7 +263,7 @@ public class DianPingCommonRequest extends HttpClientSupport {
 //			DianpingShopDetailCookie.COOKIES_DIANPING.add(map);
 //		}
 		// e480
-		header.setCookie("dper=60e25c1799bd2229ee0e398e9e50f5d0a23363ae71374826f839a01cfcac0083e9bb1928b0d82b53e2d12c59cc3efa0e37f72b6d92f67c9e627820e3d33f5ca8; ll=7fd06e815b796be3df069dec7836c3df; ua=17151837694; ctu=f5539fc230d3b0f5512266208879744adbae5f158aedaf85b6211ecde66b4ed3; _lxsdk_cuid=165cce376c9c8-08970271ce0fe-37664109-144000-165cce376c9c8; _lxsdk=165cce376c9c8-08970271ce0fe-37664109-144000-165cce376c9c8; _hc.v=96d560ca-d5a1-28b9-0e1d-51c47e1d2745.1536740785; s_ViewType=10; cy=2; cye=beijing; _lxsdk_s=165cce376ca-e33-92e-b8a%7C%7C1080");
+		header.setCookie("dper=60e25c1799bd2229ee0e398e9e50f5d0a23363ae71374826f839a01cfcac0083e9bb1928b0d82b53e2d12c59cc3efa0e37f72b6d92f67c9e627820e3d33f5ca8; ll=7fd06e815b796be3df069dec7836c3df; ua=17151837694; ctu=f5539fc230d3b0f5512266208879744adbae5f158aedaf85b6211ecde66b4ed3; _lxsdk_cuid=165cce376c9c8-08970271ce0fe-37664109-144000-165cce376c9c8; _lxsdk=165cce376c9c8-08970271ce0fe-37664109-144000-165cce376c9c8; _hc.v=96d560ca-d5a1-28b9-0e1d-51c47e1d2745.1536740785; s_ViewType=10; cy=2; cye=beijing; _lxsdk_s=165cce376ca-e33-92e-b8a%7C%7C1539");
 		// dell linux
 //		header.setCookie("cy=1; cye=shanghai; dper=4555ddfb45611ff0adbb6d5c3567817e45da99273011693cc41050c2580f6103d48b2e2d3ecaebed0c279ccee8ea2d8c7dffc22368ddefb454d33d55df07971b; ll=7fd06e815b796be3df069dec7836c3df; ua=dpuser_1496623320; ctu=ebb2def69af6e872943468635a643aef0a6c71d79721e7e067b5aedb48caf209; uamo=17681888571; _lxsdk_cuid=165cc259318c8-0b10cbc6641d11-3b7c015b-100200-165cc259318c8; _lxsdk=165cc259318c8-0b10cbc6641d11-3b7c015b-100200-165cc259318c8; _hc.v=0a36417d-7abb-3945-b335-48b4dd9d9aa9.1536728340; s_ViewType=10; _lxsdk_s=165cc25931a-cb1-6af-5ad%7C%7C253");
 		// dell windows
@@ -271,7 +271,8 @@ public class DianPingCommonRequest extends HttpClientSupport {
 		// 72
 //		header.setCookie("_lxsdk_cuid=163398adff3c8-0756071197ecf8-3c3c5905-1fa400-163398adff861; _lxsdk=163398adff3c8-0756071197ecf8-3c3c5905-1fa400-163398adff861; _hc.v=c1643cb4-2817-c0ce-df43-6c9a7f488e9a.1525678793; s_ViewType=10; ctu=27b4dd10165d51481592ec2ad457c1138c45ca81be2e5d60ac85896ce51145c1; cy=1; cye=shanghai; ua=17151837694; lgtoken=0820cda34-5e5b-4a36-8586-a858cf347501; dper=60e25c1799bd2229ee0e398e9e50f5d08090438dc7620d7bef343f6c0a0cc277b748b6b51cbb403308e97dac462cf5856acd3d1e2e92c46a3a744241fde6f307a126c65908a7bc1a6968e71568875352864372b48f3dd85e206d7eb89d6bd6c3; ll=7fd06e815b796be3df069dec7836c3df; _lxsdk_s=165ccc9ccc8-606-645-085%7C%7C237");
 		
-		header.setAutoPcUa(true);
+//		header.setAutoPcUa(true);
+		header.setAutoMobileUa(true);
 //		header.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/535.19");
 //		header.setUserAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
 //		header.setUserAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36");
