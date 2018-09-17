@@ -233,7 +233,7 @@ public class DianPingShopCommentCrawl implements Runnable {
 		String html = DianPingCommonRequest.getShopComment(header);
 		Document doc = Jsoup.parse(html);
 //		log.info(html);
-		if (null != doc.select(".no-review-item").first() || html.contains("该商户暂不展示评价")) {
+		if (null != doc.select(".no-review-item").first() || html.contains("该商户暂不展示评价") || html.contains("政府相关商户")) {
 			totalPage = 0;
 		} else if (html.contains("抱歉！页面无法访问") || html.contains("很抱歉，您要访问的页面不存在")) {
 			log.info(header.getUrl() + " 应该有评论，但是返回页面无法访问或页面不存在，重新请求");
