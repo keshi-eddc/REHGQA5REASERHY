@@ -85,7 +85,7 @@ public class CargillShopCommentJob {
 				List<DianpingShopInfo> shopList = DianPingTaskRequest.getCommentShop(10);
 				log.info("获取未抓取评论的店铺个数：" + shopList.size());
 				if (CollectionUtils.isNotEmpty(shopList)) {
-					ExecutorService pool = Executors.newFixedThreadPool(2);
+					ExecutorService pool = Executors.newFixedThreadPool(1);
 //					
 					for (DianpingShopInfo shop : shopList) {
 						pool.execute(new DianPingShopCommentCrawl(shop));

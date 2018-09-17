@@ -263,20 +263,24 @@ public class DianPingCommonRequest extends HttpClientSupport {
 //			DianpingShopDetailCookie.COOKIES_DIANPING.add(map);
 //		}
 		// e480
-		header.setCookie("dper=60e25c1799bd2229ee0e398e9e50f5d0a23363ae71374826f839a01cfcac0083e9bb1928b0d82b53e2d12c59cc3efa0e37f72b6d92f67c9e627820e3d33f5ca8; ll=7fd06e815b796be3df069dec7836c3df; ua=17151837694; ctu=f5539fc230d3b0f5512266208879744adbae5f158aedaf85b6211ecde66b4ed3; _lxsdk_cuid=165cce376c9c8-08970271ce0fe-37664109-144000-165cce376c9c8; _lxsdk=165cce376c9c8-08970271ce0fe-37664109-144000-165cce376c9c8; _hc.v=96d560ca-d5a1-28b9-0e1d-51c47e1d2745.1536740785; s_ViewType=10; cy=2; cye=beijing; _lxsdk_s=165cce376ca-e33-92e-b8a%7C%7C1539");
+//		header.setCookie("dper=60e25c1799bd2229ee0e398e9e50f5d0a23363ae71374826f839a01cfcac0083e9bb1928b0d82b53e2d12c59cc3efa0e37f72b6d92f67c9e627820e3d33f5ca8; ll=7fd06e815b796be3df069dec7836c3df; ua=17151837694; ctu=f5539fc230d3b0f5512266208879744adbae5f158aedaf85b6211ecde66b4ed3; _lxsdk_cuid=165cce376c9c8-08970271ce0fe-37664109-144000-165cce376c9c8; _lxsdk=165cce376c9c8-08970271ce0fe-37664109-144000-165cce376c9c8; _hc.v=96d560ca-d5a1-28b9-0e1d-51c47e1d2745.1536740785; s_ViewType=10; cy=2; cye=beijing; _lxsdk_s=165cce376ca-e33-92e-b8a%7C%7C1539");
 		// dell linux
 //		header.setCookie("cy=1; cye=shanghai; dper=4555ddfb45611ff0adbb6d5c3567817e45da99273011693cc41050c2580f6103d48b2e2d3ecaebed0c279ccee8ea2d8c7dffc22368ddefb454d33d55df07971b; ll=7fd06e815b796be3df069dec7836c3df; ua=dpuser_1496623320; ctu=ebb2def69af6e872943468635a643aef0a6c71d79721e7e067b5aedb48caf209; uamo=17681888571; _lxsdk_cuid=165cc259318c8-0b10cbc6641d11-3b7c015b-100200-165cc259318c8; _lxsdk=165cc259318c8-0b10cbc6641d11-3b7c015b-100200-165cc259318c8; _hc.v=0a36417d-7abb-3945-b335-48b4dd9d9aa9.1536728340; s_ViewType=10; _lxsdk_s=165cc25931a-cb1-6af-5ad%7C%7C253");
 		// dell windows
 //		header.setCookie("cy=1; cye=shanghai; _lxsdk_cuid=165ccd832bec8-0a3b12d18eadaa-323b5b03-1fa400-165ccd832bec8; _lxsdk=165ccd832bec8-0a3b12d18eadaa-323b5b03-1fa400-165ccd832bec8; _hc.v=863739b2-0084-ee96-ac21-d99b77039277.1536740046; dper=60e25c1799bd2229ee0e398e9e50f5d069475602f2f12b7ba2727bec4f15ea3c0a7e73334aa10f9dbd430e8acacb7c57b85dcfbd36d0e40dd54b8a504cf7cb3170f3a7134b5bf175c7e85755af57d8a1f9693430c66cd7d7179d27a8bc3d6a46; ll=7fd06e815b796be3df069dec7836c3df; ua=17151837694; ctu=f5539fc230d3b0f5512266208879744a78ff81210da37e04eed1ddd65cb387ff; s_ViewType=10; _lxsdk_s=165ccd832bf-61-67-502%7C%7C626");
 		// 72
 //		header.setCookie("_lxsdk_cuid=163398adff3c8-0756071197ecf8-3c3c5905-1fa400-163398adff861; _lxsdk=163398adff3c8-0756071197ecf8-3c3c5905-1fa400-163398adff861; _hc.v=c1643cb4-2817-c0ce-df43-6c9a7f488e9a.1525678793; s_ViewType=10; ctu=27b4dd10165d51481592ec2ad457c1138c45ca81be2e5d60ac85896ce51145c1; cy=1; cye=shanghai; ua=17151837694; lgtoken=0820cda34-5e5b-4a36-8586-a858cf347501; dper=60e25c1799bd2229ee0e398e9e50f5d08090438dc7620d7bef343f6c0a0cc277b748b6b51cbb403308e97dac462cf5856acd3d1e2e92c46a3a744241fde6f307a126c65908a7bc1a6968e71568875352864372b48f3dd85e206d7eb89d6bd6c3; ll=7fd06e815b796be3df069dec7836c3df; _lxsdk_s=165ccc9ccc8-606-645-085%7C%7C237");
+		// server 138
+		// cy=1; cye=shanghai; _lxsdk_cuid=165d1ba1e54c8-0ae6118c6a10c2-323b5b03-1fa400-165d1ba1e54c8; _lxsdk=165d1ba1e54c8-0ae6118c6a10c2-323b5b03-1fa400-165d1ba1e54c8; _hc.v=63fcacdf-d479-ae98-1ee4-652da8ce7434.1536821961; lgtoken=00c54f0ed-a305-403b-84ce-74e771f1534c; dper=4555ddfb45611ff0adbb6d5c3567817ea3be3a6f6d4a7e6e7374facb73a6690f5379eae5ca59df088ded9b94600907b7a1b08d8b889e4d06694e2c8855c7cb564ed0ddccc49d2c0a02f522b6fcbabe67db9eaec6c89e8eaada382694c48822c4; ll=7fd06e815b796be3df069dec7836c3df; ua=dpuser_1496623320; ctu=ebb2def69af6e872943468635a643aefb131010776503d5554022f92dd08af2c; uamo=17681888571; _lxsdk_s=165d1ba1e57-220-47c-fc7%7C%7C98
+//		header.setCookie("ll=7fd06e815b796be3df069dec7836c3df; uamo=17681888571; cy=1; cye=shanghai; _lxsdk_cuid=1645f0ec715c4-042547d92f300f-6a626029-ffc00-1645f0ec71668; _lxsdk_s=165d1b36b6d-b47-806-cae%7C%7C2004; _lxsdk=1645f0ec715c4-042547d92f300f-6a626029-ffc00-1645f0ec71668; _hc.v=a52e3cbe-882d-1133-b570-b59eab80e2be.1530603163; s_ViewType=10; dper=4555ddfb45611ff0adbb6d5c3567817ee0472153b139c49490b6bbd3b383ba8e92d38c2ca1642c568094184cf8aeb2b9105276dc05b842960e45d790a4f7a260100e35b303b21094cab68f919307b9d0657891ec81f431e04c2519c83d370255; ua=dpuser_1496623320; ctu=ebb2def69af6e872943468635a643aeff265546cc05160f1464c0481965a88d2");
+		header.setCookie("cy=1; cye=shanghai; lgtoken=08ea380c8-1fc3-42e9-8b36-5cbce0b184d2; dper=0832ebe832341c2ad870a925f362a0e6eb8b304747943cb9d9d91a108f66d0d138aef90023baf65bc589621d59814c9eba0a319e25174225525d81711a79510f; ll=7fd06e815b796be3df069dec7836c3df; ua=%E9%AD%94%E4%BA%BA%40%E6%99%AE%E4%B9%8C; ctu=946223b20ade88cd1373a6270d8145bfcc742594a58febe5ab272854d4f41fbf; uamo=13651952625; _lxsdk_cuid=165d6d9f1c9c8-055e7c25ec9f61-323b5b03-1fa400-165d6d9f1cac8; _lxsdk=165d6d9f1c9c8-055e7c25ec9f61-323b5b03-1fa400-165d6d9f1cac8; _hc.v=2f2f88bb-9d62-22f5-65b5-7e4cf9317f6f.1536907933; s_ViewType=10; _lxsdk_s=165d6d9f1cb-7b-03d-480%7C%7C325");
 		
-//		header.setAutoPcUa(true);
-		header.setAutoMobileUa(true);
+		header.setAutoPcUa(true);
+//		header.setAutoMobileUa(true);
 //		header.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/535.19");
 //		header.setUserAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
 //		header.setUserAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36");
-		header.setRequestSleepTime(10);
+		header.setRequestSleepTime(3000);
 		header.setMaxTryTimes(1);
 		HttpResponse response = get(header);
 		if (response.getCode() == HttpStatus.SC_OK) {
@@ -286,11 +290,11 @@ public class DianPingCommonRequest extends HttpClientSupport {
 					) {
 				log.info(header.getUrl() + " 应该有评论，但是返回页面无法访问或页面不存在，重新请求");
 				try {
-					TimeUnit.SECONDS.sleep(10);
+					TimeUnit.SECONDS.sleep(30);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				getShopComment(header);
+//				getShopComment(header);
 			}
 		} else if (response.getCode() == HttpStatus.SC_FORBIDDEN) {
 			log.info("页面被禁止访问，请清除缓存后重新登录，拷贝Cookie");

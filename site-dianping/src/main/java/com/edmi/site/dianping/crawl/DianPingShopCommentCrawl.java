@@ -189,7 +189,7 @@ public class DianPingShopCommentCrawl implements Runnable {
 				
 				FirstCacheHolder.getInstance().submitFirstCache(new SqlEntity(comment, DataSource.DATASOURCE_DianPing, SqlType.PARSE_INSERT));
 			
-				log.info(dianpingShopInfo.getShopId() + " " + totalPage + " 当前页数 " + page + " 向缓存中添加一条记录");
+//				log.info(dianpingShopInfo.getShopId() + " " + totalPage + " 当前页数 " + page + " 向缓存中添加一条记录");
 				
 			} catch (Exception e) {
 				e.printStackTrace();
