@@ -175,16 +175,16 @@ public class DianPingShopCommentCrawl implements Runnable {
 					break;
 				}
 				
-				Element praiseEle = shop.select(".actions .praise").first().nextElementSibling();
-				comment.setFavoriteNum(praiseEle.hasClass("col-exp")
+				Element praiseEle = null != shop.select(".actions .praise").first() ? shop.select(".actions .praise").first().nextElementSibling() : null;
+				comment.setFavoriteNum((null != praiseEle && praiseEle.hasClass("col-exp"))
 						? NumberUtils.toInt(praiseEle.text().replace("(", "").replace(")", ""), 0) : 0);
 				
-				Element replyEle = shop.select(".actions .reply").first().nextElementSibling();
-				comment.setReplyNum(replyEle.hasClass("col-exp")
+				Element replyEle = null != shop.select(".actions .reply").first() ? shop.select(".actions .reply").first().nextElementSibling() : null;
+				comment.setReplyNum((null != replyEle && replyEle.hasClass("col-exp"))
 						? NumberUtils.toInt(replyEle.text().replace("(", "").replace(")", ""), 0) : 0);
 				
-				Element collectionEle = shop.select(".actions .favor").first().nextElementSibling();
-				comment.setCollectNum(collectionEle.hasClass("col-exp")
+				Element collectionEle = null != shop.select(".actions .favor").first() ? shop.select(".actions .favor").first().nextElementSibling() : null;
+				comment.setCollectNum((null != collectionEle && collectionEle.hasClass("col-exp"))
 						? NumberUtils.toInt(collectionEle.text().replace("(", "").replace(")", ""), 0) : 0);
 				
 				FirstCacheHolder.getInstance().submitFirstCache(new SqlEntity(comment, DataSource.DATASOURCE_DianPing, SqlType.PARSE_INSERT));
