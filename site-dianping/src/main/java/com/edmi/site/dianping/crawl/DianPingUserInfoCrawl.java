@@ -52,10 +52,11 @@ public class DianPingUserInfoCrawl implements Runnable {
 		try {
 			HttpRequestHeader header = new HttpRequestHeader();
 			header.setUrl("https://m.dianping.com/userprofile/ajax/profileinfo?id=" + comment.getUserId());
+//			header.setUrl("http://www.dianping.com/member/" + comment.getUserId());
 			header.setProxyType(ProxyType.PROXY_STATIC_DLY);
 			header.setProject(Project.CARGILL);
 			header.setSite(Site.DIANPING);
-			header.setReferer("http://www.dianping.com/shop/" + comment.getShopId());
+//			header.setReferer("http://www.dianping.com/shop/" + comment.getShopId());
 			String html = DianPingCommonRequest.getUserInfo(header);
 			
 //			if(StringUtils.isNotEmpty(html) && !html.contains("页面无法访问")) {
@@ -69,9 +70,10 @@ public class DianPingUserInfoCrawl implements Runnable {
 				if (null != jsonObj && jsonObj.containsKey("code") && jsonObj.getInteger("code") == 200) {
 					log.info("开始解析用户信息 " + comment.getUserId());
 					DianpingUserInfo user = DianpingParser.parseUserInfo_Mobile(jsonObj, comment);
-//					iGeneralJdbcUtils.execute(new SqlEntity(user, DataSource.DATASOURCE_DianPing, SqlType.PARSE_INSERT_NOT_EXISTS));
 					FirstCacheHolder.getInstance().submitFirstCache(new SqlEntity(user, DataSource.DATASOURCE_DianPing, SqlType.PARSE_INSERT_NOT_EXISTS));
 				}
+//				DianpingUserInfo user = DianpingParser.parseUserInfo_PC(doc, comment);
+//				FirstCacheHolder.getInstance().submitFirstCache(new SqlEntity(user, DataSource.DATASOURCE_DianPing, SqlType.PARSE_INSERT_NOT_EXISTS));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -88,19 +90,23 @@ public class DianPingUserInfoCrawl implements Runnable {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		IGeneralJdbcUtils iGeneralJdbcUtils = (IGeneralJdbcUtils) ApplicationContextHolder.getBean(GeneralJdbcUtils.class);
 
-//		DianPingCommonRequest.refreshUserInfoCookie();
-//		DianPingCommonRequest.refreshShopRecommendCookie();
+		String sql = "select distinct top 20000 user_id from dbo.Dianping_Shop_Comment "
+				+ "where isNUMERIC(user_id) = 1 "
+				+ "and user_id not in (select user_id from dbo.Dianping_User_Info)";
 		
 		int count = 0;
 		try {
 			while (true) {
 				count ++;
 				System.out.println("##################" + count);
-				List<DianpingShopComment> list = DianPingTaskRequest.getUserInfoTask();
+//				List<DianpingShopComment> list = DianPingTaskRequest.getUserInfoTask();
+				List<DianpingShopComment> list = iGeneralJdbcUtils.queryForListObject(
+						new SqlEntity(sql, DataSource.DATASOURCE_DianPing, SqlType.PARSE_NO),
+						DianpingShopComment.class);
 				log.info("获取未抓取用户个数：" + list.size());
 				if (CollectionUtils.isNotEmpty(list)) {
 					
-					ExecutorService pool = Executors.newFixedThreadPool(20);
+					ExecutorService pool = Executors.newFixedThreadPool(40);
 					for (DianpingShopComment comment : list) {
 						pool.submit(new DianPingUserInfoCrawl(comment));
 					}

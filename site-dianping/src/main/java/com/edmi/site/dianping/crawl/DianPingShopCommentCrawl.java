@@ -102,6 +102,10 @@ public class DianPingShopCommentCrawl implements Runnable {
 		log.info(dianpingShopInfo.getShopId() + " 总页数 " + totalPage + " 当前页数 " + page + " 该页有 " + commentList.size() + " 条记录");
 		
 		for (Element shop : commentList) {
+			// 来自美团的评论无法抓到用户ID
+			if (shop.text().contains("该条评论来自美团")) {
+				continue;
+			}
 			try {
 
 				DianpingShopComment comment = new DianpingShopComment();

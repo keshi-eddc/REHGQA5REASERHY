@@ -281,8 +281,19 @@ public class DianpingParser {
 			if (jsonObj.containsKey("data")) {
 				JSONObject data = jsonObj.getJSONObject("data");
 				user.setUserName(StringUtils.isNotEmpty(data.getString("nickName")) ? data.getString("nickName") : "");
-				user.setIsVip(null != data.getBoolean("isVip") && data.getBoolean("isVip") ? 1 : 0);
-				user.setUserLevel(StringUtils.isNotEmpty(data.getString("level")) ? data.getString("level") : "");
+//				user.setIsVip(null != data.getBoolean("isVip") && data.getBoolean("isVip") ? 1 : 0);
+//				user.setUserLevel(StringUtils.isNotEmpty(data.getString("level")) ? data.getString("level") : "");
+				String roundUrl62x32 = data.getString("roundUrl62x32");
+				if (StringUtils.isNotEmpty(roundUrl62x32)) {
+					user.setUserLevel(roundUrl62x32.substring(roundUrl62x32.indexOf("Lv") + 2, roundUrl62x32.indexOf("_3x")));
+				}
+				String authorVIconInfo = data.getString("authorVIconInfo");
+				if (StringUtils.isNotEmpty(authorVIconInfo)) {
+					JSONObject temp = data.getJSONObject("authorVIconInfo");
+					user.setIsVip(StringUtils.isNotEmpty(temp.getString("icon")) ? 1 : 0);
+				} else {
+					user.setIsVip(0);
+				}
 				user.setSex(StringUtils.isNotEmpty(data.getString("gender")) ? data.getString("gender") : "");
 				user.setCity(StringUtils.isNotEmpty(data.getString("city")) ? data.getString("city") : "");
 				user.setFocusNum(StringUtils.isNotEmpty(data.getString("followCount")) ? Integer.parseInt(data.getString("followCount")) : 0);
